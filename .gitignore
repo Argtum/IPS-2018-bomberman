@@ -1,0 +1,9 @@
+*.txt
+*.zip
+*.log
+*.pdf
+*.xls
+node_modules/*
+build/*
+vendor/*
+.idea/*
