@@ -1,9 +1,9 @@
 *.txt
 *.zip
 *.log
+*.md
 *.pdf
 *.xls
 node_modules/*
-build/*
 vendor/*
 .idea/*
