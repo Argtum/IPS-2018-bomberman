@@ -14,11 +14,10 @@ const BOMBERMAN_COLOR = '#999';
 const BOMBERMAN_DIRECTION_X = 0;
 const BOMBERMAN_DIRECTION_Y = 0;
 
-const BARRIER_WIDTH = 46;
-const BARRIER_HEIGHT = 46;
+const BARRIER_WIDTH = 44;
+const BARRIER_HEIGHT = 44;
 const BARRIER_COLOR = '#555';
-const BARRIER_CORRECTION_X = 2;
-const BARRIER_CORRECTION_Y = 2;
+const BARRIER_CORRECTION = 3;
 
 const BUTTON = {
     LEFT: 37,
@@ -41,7 +40,7 @@ function DrawBattleArena(ctx, arena) {
 
 function DrawBarrier(ctx, barrier) {
     ctx.fillStyle = barrier.barrierColor;
-    ctx.fillRect(barrier.startX, barrier.startY, barrier.arenaWidth, barrier.arenaHeight);
+    ctx.fillRect(barrier.startX, barrier.startY, barrier.width, barrier.height);
 }
 
 function Bomber(startPositionX, startPositionY, speed, radius, bomberColor, radiusStart, radiusEnd, dirX, dirY) {
@@ -59,8 +58,8 @@ function Bomber(startPositionX, startPositionY, speed, radius, bomberColor, radi
 function Barrier(barrierStartX, barrierStartY, barrierWidth, barrierHeight, barrierColor) {
     this.startX = barrierStartX;
     this.startY = barrierStartY;
-    this.arenaWidth = barrierWidth;
-    this.arenaHeight = barrierHeight;
+    this.width = barrierWidth;
+    this.height = barrierHeight;
     this.barrierColor = barrierColor;
 }
 
@@ -87,7 +86,7 @@ function redraw(ctx, arena, bomber, indestructibleBarriers) {
     DrawBomber(ctx, bomber);
 }
 
-function update(dt, bomber) {
+function update(dt, bomber, barriers) {
     const distance = dt * bomber.speed;
 
     document.addEventListener("keydown", (buttonkey) => {
@@ -120,24 +119,25 @@ function update(dt, bomber) {
         }
     });
 
-    const futureXLeft = bomber.directionX * distance + bomber.x - bomber.radius - 1;
-    const futureXRight = bomber.directionX * distance + bomber.x + bomber.radius + 1;
-    const futureYUp = bomber.directionY * distance + bomber.y - bomber.radius - 1;
-    const futureYDown = bomber.directionY * distance + bomber.y + bomber.radius + 1;
+    const futureLeft = bomber.directionX * distance + bomber.x - bomber.radius - 1;
+    const futureRight = bomber.directionX * distance + bomber.x + bomber.radius + 1;
+    const futureUp = bomber.directionY * distance + bomber.y - bomber.radius - 1;
+    const futureDown = bomber.directionY * distance + bomber.y + bomber.radius + 1;
 
-    const isAllowedMove = checkCollision(futureXRight, futureXLeft, futureYDown, futureYUp);
+    const isAllowedMove = checkArenaCollision(futureRight, futureLeft, futureDown, futureUp);
+    const isCollision = checkBlocksCollision(futureRight, futureLeft, futureDown, futureUp, barriers);
 
-    if (isAllowedMove.x) {
+    if (isAllowedMove.x && !isCollision) {
         bomber.x += bomber.directionX * distance;
     }
-    if (isAllowedMove.y) {
+    if (isAllowedMove.y && !isCollision) {
         bomber.y += bomber.directionY * distance;
     }
 }
 
 function createBarriers(startPositionX, startPositionY) {
-    const barrierStartX = BARRIER_CORRECTION_X + startPositionX;
-    const barrierStartY = BARRIER_CORRECTION_Y + startPositionY;
+    const barrierStartX = BARRIER_CORRECTION + startPositionX;
+    const barrierStartY = BARRIER_CORRECTION + startPositionY;
     const barrierWidth = BARRIER_WIDTH;
     const barrierHeight = BARRIER_HEIGHT;
     const barrierColor = BARRIER_COLOR;
@@ -151,7 +151,7 @@ function createBarriers(startPositionX, startPositionY) {
     );
 }
 
-function checkCollision(xMax, xMin, yMax, yMin) {
+function checkArenaCollision(xMax, xMin, yMax, yMin) {
     let allowedMove = {};
     allowedMove.x = true;
     allowedMove.y = true;
@@ -165,6 +165,25 @@ function checkCollision(xMax, xMin, yMax, yMin) {
     }
 
     return allowedMove;
+}
+
+function isRectContains(x, y, barrier) {
+    return  (x >= barrier.startX && x <= barrier.startX + barrier.width) &&
+            (y >= barrier.startY && y <= barrier.startY + barrier.height)
+}
+
+function checkBlocksCollision(right, left, down, up, barriers) {
+    let isCollision = false;
+
+    for (const barrier of barriers) {
+        if ((!isCollision) && ( isRectContains(right, down, barrier) ||
+                                isRectContains(left, down, barrier) ||
+                                isRectContains(left, up, barrier) ||
+                                isRectContains(right, up, barrier))) {
+            isCollision = true;
+        }
+    }
+    return isCollision;
 }
 
 function main() {
@@ -214,7 +233,7 @@ function main() {
         const deltaTime = (currentTimeStamp - lastTimestamp) * 0.001; //сколько секунд прошло с прошлого кадра
         lastTimestamp = currentTimeStamp;
 
-        update(deltaTime, bomber);
+        update(deltaTime, bomber, indestructibleBarriers);
         redraw(ctx, arena, bomber, indestructibleBarriers);
         requestAnimationFrame(animateFn);
     };
