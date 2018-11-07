@@ -1,6 +1,7 @@
 *.txt
 *.zip
 *.log
+*.md
 *.pdf
 *.xls
 node_modules/*
