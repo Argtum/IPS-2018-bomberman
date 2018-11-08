@@ -1,23 +1,34 @@
-const ARENA_START_POINT_X = 0;
-const ARENA_START_POINT_Y = 0;
-const ARENA_CELL_WIDTH = 50;
-const ARENA_CELL_HEIGHT = 50;
-const NUMBER_OF_CELL_X = 15;
-const NUMBER_OF_CELL_Y = 11;
-const ARENA_BACKGROUND_COLOR = '#CCC';
+import {
+    BOMBERMAN_RADIUS,
+    BOMBERMAN_SPEED,
+    CIRCLE_START_ANGLE,
+    CIRCLE_END_ANGLE,
+    BOMBERMAN_COLOR,
+    BOMBERMAN_DIRECTION_X,
+    BOMBERMAN_DIRECTION_Y,
+    Bomber,
+} from "./canvas_part/bomber.js";
 
-const BOMBERMAN_RADIUS = 22;
-const BOMBERMAN_SPEED = 200;
-const CIRCLE_START_ANGLE = 0;
-const CIRCLE_END_ANGLE = Math.PI * 2;
-const BOMBERMAN_COLOR = '#999';
-const BOMBERMAN_DIRECTION_X = 0;
-const BOMBERMAN_DIRECTION_Y = 0;
+import {
+    ARENA_START_POINT_X,
+    ARENA_START_POINT_Y,
+    ARENA_CELL_WIDTH,
+    ARENA_CELL_HEIGHT,
+    NUMBER_OF_CELL_X,
+    NUMBER_OF_CELL_Y,
+    ARENA_BACKGROUND_COLOR,
+    Arena,
+} from "./canvas_part/arena.js";
 
-const BARRIER_WIDTH = 44;
-const BARRIER_HEIGHT = 44;
-const BARRIER_COLOR = '#555';
-const BARRIER_CORRECTION = 3;
+import {
+    BARRIER_WIDTH,
+    BARRIER_HEIGHT,
+    BARRIER_COLOR,
+    BARRIER_CORRECTION,
+    Barrier,
+} from "./canvas_part/barrier.js";
+
+const BOMB_COLOR = '#FFF';
 
 const BUTTON = {
     LEFT: 37,
@@ -43,32 +54,19 @@ function DrawBarrier(ctx, barrier) {
     ctx.fillRect(barrier.startX, barrier.startY, barrier.width, barrier.height);
 }
 
-function Bomber(startPositionX, startPositionY, speed, radius, bomberColor, radiusStart, radiusEnd, dirX, dirY) {
-    this.x = startPositionX;
-    this.y = startPositionY;
-    this.speed = speed;
+function Bomb(positionX, positionY, radius, radiusStart, radiusEnd) {
+    this.x = positionX;
+    this.y = positionY;
     this.radius = radius;
-    this.bomberColor = bomberColor;
     this.radiusStart = radiusStart;
     this.radiusEnd = radiusEnd;
-    this.directionX = dirX;
-    this.directionY = dirY;
 }
 
-function Barrier(barrierStartX, barrierStartY, barrierWidth, barrierHeight, barrierColor) {
-    this.startX = barrierStartX;
-    this.startY = barrierStartY;
-    this.width = barrierWidth;
-    this.height = barrierHeight;
-    this.barrierColor = barrierColor;
-}
-
-function Arena(arenaStartX, arenaStartY, arenaWidth, arenaHeight, backgroundColor) {
-    this.startX = arenaStartX;
-    this.startY = arenaStartY;
-    this.arenaWidth = arenaWidth;
-    this.arenaHeight = arenaHeight;
-    this.backgroundColor = backgroundColor;
+function DrawBomb(positionX, positionY, radius, radiusStart, radiusEnd) {
+    ctx.fillStyle = bomb.bomberColor;
+    ctx.arc(bomb.x, bomb.y, bomb.radius, bomb.radiusStart, bomb.radiusEnd);
+    ctx.fill();
+    ctx.beginPath();
 }
 
 function DrawBomber(ctx, bomber) {
