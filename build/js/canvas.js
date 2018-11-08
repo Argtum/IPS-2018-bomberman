@@ -21,7 +21,8 @@ const BUTTON = {
     LEFT: 37,
     UP: 38,
     RIGHT: 39,
-    DOWN: 40
+    DOWN: 40,
+    SPACE: 32,
 };
 
 const DIRECTION = {
@@ -42,8 +43,8 @@ function DrawBarrier(ctx, barrier) {
     ctx.fillRect(barrier.startX, barrier.startY, barrier.width, barrier.height);
 }
 
-function DrawBomb(positionX, positionY, radius, radiusStart, radiusEnd) {
-    ctx.fillStyle = bomb.bomberColor;
+function DrawBomb(ctx, bomb) {
+    ctx.fillStyle = bomb.color;
     ctx.arc(bomb.x, bomb.y, bomb.radius, bomb.radiusStart, bomb.radiusEnd);
     ctx.fill();
     ctx.beginPath();
@@ -56,10 +57,15 @@ function DrawBomber(ctx, bomber) {
     ctx.beginPath();
 }
 
-function redraw(ctx, arena, bomber, indestructibleBarriers) {
+function redraw(ctx, arena, bomber, indestructibleBarriers, bombs) {
     DrawBattleArena(ctx, arena);
     for (const barrier of indestructibleBarriers) {
         DrawBarrier(ctx, barrier);
+    }
+    if (bombs) {
+        for (const bomb of bombs) {
+            DrawBomb(ctx, bomb);
+        }
     }
     DrawBomber(ctx, bomber);
 }
@@ -162,7 +168,19 @@ function main() {
         }
     }
 
-    redraw(ctx, arena, bomber, indestructibleBarriers);
+    const bombs = [];
+    document.addEventListener("keydown", (buttonkey) => {
+        if (buttonkey.keyCode == BUTTON.SPACE) {
+            bombs.push(createBomb(bomber.x, bomber.y));
+            setTimeout(() => {
+                if (bombs) {
+                    bombs.shift();
+                }
+            }, 2500);
+        }
+    });
+
+    redraw(ctx, arena, bomber, indestructibleBarriers, bombs);
 
     let lastTimestamp = Date.now();
     const animateFn = () => {
@@ -171,7 +189,7 @@ function main() {
         lastTimestamp = currentTimeStamp;
 
         update(deltaTime, bomber, indestructibleBarriers, arena);
-        redraw(ctx, arena, bomber, indestructibleBarriers);
+        redraw(ctx, arena, bomber, indestructibleBarriers, bombs);
         requestAnimationFrame(animateFn);
     };
     animateFn();
