@@ -1,34 +1,21 @@
 import {
-    BOMBERMAN_RADIUS,
-    BOMBERMAN_SPEED,
-    CIRCLE_START_ANGLE,
-    CIRCLE_END_ANGLE,
-    BOMBERMAN_COLOR,
-    BOMBERMAN_DIRECTION_X,
-    BOMBERMAN_DIRECTION_Y,
-    Bomber,
+    createBomber,
 } from "./canvas_part/bomber.js";
 
 import {
-    ARENA_START_POINT_X,
-    ARENA_START_POINT_Y,
-    ARENA_CELL_WIDTH,
     ARENA_CELL_HEIGHT,
-    NUMBER_OF_CELL_X,
-    NUMBER_OF_CELL_Y,
-    ARENA_BACKGROUND_COLOR,
-    Arena,
+    ARENA_CELL_WIDTH,
+    createArena,
 } from "./canvas_part/arena.js";
 
 import {
-    BARRIER_WIDTH,
-    BARRIER_HEIGHT,
-    BARRIER_COLOR,
-    BARRIER_CORRECTION,
-    Barrier,
+    isRectContains,
+    createBarriers,
 } from "./canvas_part/barrier.js";
 
-const BOMB_COLOR = '#FFF';
+import {
+    createBomb,
+} from "./canvas_part/bomb.js";
 
 const BUTTON = {
     LEFT: 37,
@@ -41,7 +28,8 @@ const DIRECTION = {
     LEFT: -1,
     UP: -1,
     RIGHT: 1,
-    DOWN: 1
+    DOWN: 1,
+    NONE: 0,
 };
 
 function DrawBattleArena(ctx, arena) {
@@ -52,14 +40,6 @@ function DrawBattleArena(ctx, arena) {
 function DrawBarrier(ctx, barrier) {
     ctx.fillStyle = barrier.barrierColor;
     ctx.fillRect(barrier.startX, barrier.startY, barrier.width, barrier.height);
-}
-
-function Bomb(positionX, positionY, radius, radiusStart, radiusEnd) {
-    this.x = positionX;
-    this.y = positionY;
-    this.radius = radius;
-    this.radiusStart = radiusStart;
-    this.radiusEnd = radiusEnd;
 }
 
 function DrawBomb(positionX, positionY, radius, radiusStart, radiusEnd) {
@@ -84,7 +64,7 @@ function redraw(ctx, arena, bomber, indestructibleBarriers) {
     DrawBomber(ctx, bomber);
 }
 
-function update(dt, bomber, barriers) {
+function update(dt, bomber, barriers, arena) {
     const distance = dt * bomber.speed;
 
     document.addEventListener("keydown", (buttonkey) => {
@@ -104,16 +84,16 @@ function update(dt, bomber, barriers) {
 
     document.addEventListener("keyup", (buttonkey) => {
         if (buttonkey.keyCode == BUTTON.LEFT) {
-            bomber.directionX = BOMBERMAN_DIRECTION_X;
+            bomber.directionX = DIRECTION.NONE;
         }
         if (buttonkey.keyCode == BUTTON.UP) {
-            bomber.directionY = BOMBERMAN_DIRECTION_Y;
+            bomber.directionY = DIRECTION.NONE;
         }
         if (buttonkey.keyCode == BUTTON.RIGHT) {
-            bomber.directionX = BOMBERMAN_DIRECTION_X;
+            bomber.directionX = DIRECTION.NONE;
         }
         if (buttonkey.keyCode == BUTTON.DOWN) {
-            bomber.directionY = BOMBERMAN_DIRECTION_Y;
+            bomber.directionY = DIRECTION.NONE;
         }
     });
 
@@ -122,7 +102,7 @@ function update(dt, bomber, barriers) {
     const futureUp = bomber.directionY * distance + bomber.y - bomber.radius - 1;
     const futureDown = bomber.directionY * distance + bomber.y + bomber.radius + 1;
 
-    const isAllowedMove = checkArenaCollision(futureRight, futureLeft, futureDown, futureUp);
+    const isAllowedMove = checkArenaCollision(futureRight, futureLeft, futureDown, futureUp, arena);
     const isCollision = checkBlocksCollision(futureRight, futureLeft, futureDown, futureUp, barriers);
 
     if (isAllowedMove.x && !isCollision) {
@@ -133,41 +113,20 @@ function update(dt, bomber, barriers) {
     }
 }
 
-function createBarriers(startPositionX, startPositionY) {
-    const barrierStartX = BARRIER_CORRECTION + startPositionX;
-    const barrierStartY = BARRIER_CORRECTION + startPositionY;
-    const barrierWidth = BARRIER_WIDTH;
-    const barrierHeight = BARRIER_HEIGHT;
-    const barrierColor = BARRIER_COLOR;
-
-    return new Barrier (
-        barrierStartX,
-        barrierStartY,
-        barrierWidth,
-        barrierHeight,
-        barrierColor
-    );
-}
-
-function checkArenaCollision(xMax, xMin, yMax, yMin) {
+function checkArenaCollision(xMax, xMin, yMax, yMin, arena) {
     let allowedMove = {};
     allowedMove.x = true;
     allowedMove.y = true;
 
-    if (xMin < 0 || xMax > ARENA_CELL_WIDTH * NUMBER_OF_CELL_X) {
+    if (xMin < 0 || xMax > arena.arenaWidth) {
         allowedMove.x = false;
     }
 
-    if (yMin < 0 || yMax > ARENA_CELL_HEIGHT * NUMBER_OF_CELL_Y) {
+    if (yMin < 0 || yMax > arena.arenaHeight) {
         allowedMove.y = false;
     }
 
     return allowedMove;
-}
-
-function isRectContains(x, y, barrier) {
-    return  (x >= barrier.startX && x <= barrier.startX + barrier.width) &&
-            (y >= barrier.startY && y <= barrier.startY + barrier.height)
 }
 
 function checkBlocksCollision(right, left, down, up, barriers) {
@@ -190,38 +149,18 @@ function main() {
     canvas.height = canvas.offsetHeight;
     const ctx = canvas.getContext('2d');
 
-    const arenaWidth = ARENA_CELL_WIDTH * NUMBER_OF_CELL_X;
-    const arenaHeight = ARENA_CELL_HEIGHT * NUMBER_OF_CELL_Y;
+    const bomberStartPositionX = 25;
+    const bomberStartPositionY = 25;
 
-    let arena = new Arena(
-        ARENA_START_POINT_X,
-        ARENA_START_POINT_Y,
-        arenaWidth,
-        arenaHeight,
-        ARENA_BACKGROUND_COLOR
-    );
+    let bomber = createBomber(bomberStartPositionX, bomberStartPositionY);
+    let arena = createArena();
 
     const indestructibleBarriers = [];
-    for(let y = ARENA_CELL_HEIGHT; y < arenaHeight; y+= ARENA_CELL_HEIGHT * 2) {
-        for(let x = ARENA_CELL_WIDTH; x < arenaWidth; x += ARENA_CELL_WIDTH * 2) {
+    for(let y = ARENA_CELL_HEIGHT; y < arena.arenaHeight; y+= ARENA_CELL_HEIGHT * 2) {
+        for(let x = ARENA_CELL_WIDTH; x < arena.arenaWidth; x += ARENA_CELL_WIDTH * 2) {
             indestructibleBarriers.push(createBarriers(x, y));
         }
     }
-
-    const startPositionX = 25;
-    const startPositionY = 25;
-
-    let bomber = new Bomber(
-        startPositionX,
-        startPositionY,
-        BOMBERMAN_SPEED,
-        BOMBERMAN_RADIUS,
-        BOMBERMAN_COLOR,
-        CIRCLE_START_ANGLE,
-        CIRCLE_END_ANGLE,
-        BOMBERMAN_DIRECTION_X,
-        BOMBERMAN_DIRECTION_Y
-    );
 
     redraw(ctx, arena, bomber, indestructibleBarriers);
 
@@ -231,7 +170,7 @@ function main() {
         const deltaTime = (currentTimeStamp - lastTimestamp) * 0.001; //сколько секунд прошло с прошлого кадра
         lastTimestamp = currentTimeStamp;
 
-        update(deltaTime, bomber, indestructibleBarriers);
+        update(deltaTime, bomber, indestructibleBarriers, arena);
         redraw(ctx, arena, bomber, indestructibleBarriers);
         requestAnimationFrame(animateFn);
     };

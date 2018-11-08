@@ -11,10 +11,28 @@ function Barrier(barrierStartX, barrierStartY, barrierWidth, barrierHeight, barr
     this.barrierColor = barrierColor;
 }
 
+function isRectContains(x, y, barrier) {
+    return  (x >= barrier.startX && x <= barrier.startX + barrier.width) &&
+        (y >= barrier.startY && y <= barrier.startY + barrier.height)
+}
+
+function createBarriers(startPositionX, startPositionY) {
+    const barrierStartX = BARRIER_CORRECTION + startPositionX;
+    const barrierStartY = BARRIER_CORRECTION + startPositionY;
+    const barrierWidth = BARRIER_WIDTH;
+    const barrierHeight = BARRIER_HEIGHT;
+    const barrierColor = BARRIER_COLOR;
+
+    return new Barrier (
+        barrierStartX,
+        barrierStartY,
+        barrierWidth,
+        barrierHeight,
+        barrierColor
+    );
+}
+
 export {
-    BARRIER_WIDTH,
-    BARRIER_HEIGHT,
-    BARRIER_COLOR,
-    BARRIER_CORRECTION,
-    Barrier,
+    isRectContains,
+    createBarriers,
 };

@@ -14,13 +14,24 @@ function Arena(arenaStartX, arenaStartY, arenaWidth, arenaHeight, backgroundColo
     this.backgroundColor = backgroundColor;
 }
 
+function createArena() {
+    const arenaStartX = ARENA_START_POINT_X;
+    const arenaStartY = ARENA_START_POINT_Y;
+    const arenaWidth = ARENA_CELL_WIDTH * NUMBER_OF_CELL_X;
+    const arenaHeight = ARENA_CELL_HEIGHT * NUMBER_OF_CELL_Y;
+    const backgroundColor = ARENA_BACKGROUND_COLOR;
+
+    return new Arena (
+        arenaStartX,
+        arenaStartY,
+        arenaWidth,
+        arenaHeight,
+        backgroundColor
+    );
+}
+
 export {
-    ARENA_START_POINT_X,
-    ARENA_START_POINT_Y,
-    ARENA_CELL_WIDTH,
     ARENA_CELL_HEIGHT,
-    NUMBER_OF_CELL_X,
-    NUMBER_OF_CELL_Y,
-    ARENA_BACKGROUND_COLOR,
-    Arena,
+    ARENA_CELL_WIDTH,
+    createArena,
 };
