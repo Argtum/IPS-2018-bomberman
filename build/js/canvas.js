@@ -3,8 +3,7 @@ import {
 } from "./canvas_part/bomber.js";
 
 import {
-    ARENA_CELL_HEIGHT,
-    ARENA_CELL_WIDTH,
+    ARENA_CELL,
     createArena,
 } from "./canvas_part/arena.js";
 
@@ -14,6 +13,8 @@ import {
 } from "./canvas_part/barrier.js";
 
 import {
+    BOMB_TIMEOUT,
+    EXPLOSION_TIME,
     createBomb,
 } from "./canvas_part/bomb.js";
 
@@ -50,6 +51,11 @@ function DrawBomb(ctx, bomb) {
     ctx.beginPath();
 }
 
+function DrawFire(ctx, explosions) {
+    ctx.fillStyle = explosions.fireColor;
+    ctx.fillRect(explosions.x - ARENA_CELL / 2, explosions.y - ARENA_CELL / 2, ARENA_CELL, ARENA_CELL);
+}
+
 function DrawBomber(ctx, bomber) {
     ctx.fillStyle = bomber.bomberColor;
     ctx.arc(bomber.x, bomber.y, bomber.radius, bomber.radiusStart, bomber.radiusEnd);
@@ -57,7 +63,7 @@ function DrawBomber(ctx, bomber) {
     ctx.beginPath();
 }
 
-function redraw(ctx, arena, bomber, indestructibleBarriers, bombs) {
+function redraw(ctx, arena, bomber, indestructibleBarriers, bombs, explosions) {
     DrawBattleArena(ctx, arena);
     for (const barrier of indestructibleBarriers) {
         DrawBarrier(ctx, barrier);
@@ -67,10 +73,15 @@ function redraw(ctx, arena, bomber, indestructibleBarriers, bombs) {
             DrawBomb(ctx, bomb);
         }
     }
+    if (explosions) {
+        for (const explosion of explosions) {
+            DrawFire(ctx, explosion);
+        }
+    }
     DrawBomber(ctx, bomber);
 }
 
-function update(dt, bomber, barriers, arena) {
+function update(dt, bomber, barriers, arena, explosions) {
     const distance = dt * bomber.speed;
 
     document.addEventListener("keydown", (buttonkey) => {
@@ -162,21 +173,27 @@ function main() {
     let arena = createArena();
 
     const indestructibleBarriers = [];
-    for(let y = ARENA_CELL_HEIGHT; y < arena.arenaHeight; y+= ARENA_CELL_HEIGHT * 2) {
-        for(let x = ARENA_CELL_WIDTH; x < arena.arenaWidth; x += ARENA_CELL_WIDTH * 2) {
+    for(let y = ARENA_CELL; y < arena.arenaHeight; y+= ARENA_CELL * 2) {
+        for(let x = ARENA_CELL; x < arena.arenaWidth; x += ARENA_CELL * 2) {
             indestructibleBarriers.push(createBarriers(x, y));
         }
     }
 
     const bombs = [];
+    const explosions = [];
     document.addEventListener("keydown", (buttonkey) => {
         if (buttonkey.keyCode == BUTTON.SPACE) {
             bombs.push(createBomb(bomber.x, bomber.y));
             setTimeout(() => {
                 if (bombs) {
-                    bombs.shift();
+                    explosions.push(bombs.shift());
+                    setTimeout(() => {
+                        if (explosions) {
+                            explosions.shift();
+                        }
+                    }, EXPLOSION_TIME);
                 }
-            }, 2500);
+            }, BOMB_TIMEOUT);
         }
     });
 
@@ -188,8 +205,8 @@ function main() {
         const deltaTime = (currentTimeStamp - lastTimestamp) * 0.001; //сколько секунд прошло с прошлого кадра
         lastTimestamp = currentTimeStamp;
 
-        update(deltaTime, bomber, indestructibleBarriers, arena);
-        redraw(ctx, arena, bomber, indestructibleBarriers, bombs);
+        update(deltaTime, bomber, indestructibleBarriers, arena, explosions);
+        redraw(ctx, arena, bomber, indestructibleBarriers, bombs, explosions);
         requestAnimationFrame(animateFn);
     };
     animateFn();
