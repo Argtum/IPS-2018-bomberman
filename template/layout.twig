@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>
-            {% block title %}{% endblock %}
-        </title>
-        {% block meta %}{% endblock %}
+        <title>Bomberman</title>
+        <meta charset="utf-8">
         {% block styles %}
             {% include "/include/styles.twig" %}
         {% endblock %}
     </head>
     <body>
-        <div class="canvas-wrapper">
+        <article class="canvas-wrapper">
             {% block canvas %}{% endblock %}
-        </div>
+        </article>
         {% block js %}
             {% include "/include/js.twig" %}
         {% endblock %}

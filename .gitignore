@@ -4,6 +4,11 @@
 *.md
 *.pdf
 *.xls
-node_modules/*
-vendor/*
-.idea/*
+vendor/
+.idea/
+.DS_Store
+build/
+bower_components
+node_modules
+npm-debug.log
+Будет удалено etc/
