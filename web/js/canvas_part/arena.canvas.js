@@ -5,7 +5,7 @@ const NUMBER_OF_CELL_X = 15;
 const NUMBER_OF_CELL_Y = 11;
 const ARENA_BACKGROUND_COLOR = '#CCC';
 
-function Arena(arenaStartX, arenaStartY, arenaWidth, arenaHeight, backgroundColor) {
+function ArenaCanvas(arenaStartX, arenaStartY, arenaWidth, arenaHeight, backgroundColor) {
     this.startX = arenaStartX;
     this.startY = arenaStartY;
     this.arenaWidth = arenaWidth;
@@ -20,7 +20,7 @@ function createArena() {
     const arenaHeight = ARENA_CELL * NUMBER_OF_CELL_Y;
     const backgroundColor = ARENA_BACKGROUND_COLOR;
 
-    return new Arena (
+    return new ArenaCanvas (
         arenaStartX,
         arenaStartY,
         arenaWidth,

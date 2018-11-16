@@ -1,1 +1,3 @@
-$(document).foundation();
+$(window).on('load', function () {
+    $(document).foundation();
+});

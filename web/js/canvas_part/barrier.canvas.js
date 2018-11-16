@@ -3,7 +3,7 @@ const BARRIER_HEIGHT = 44;
 const BARRIER_COLOR = '#555';
 const BARRIER_CORRECTION = 3;
 
-function Barrier(barrierStartX, barrierStartY, barrierWidth, barrierHeight, barrierColor) {
+function BarrierCanvas(barrierStartX, barrierStartY, barrierWidth, barrierHeight, barrierColor) {
     this.startX = barrierStartX;
     this.startY = barrierStartY;
     this.width = barrierWidth;
@@ -23,7 +23,7 @@ function createBarriers(startPositionX, startPositionY) {
     const barrierHeight = BARRIER_HEIGHT;
     const barrierColor = BARRIER_COLOR;
 
-    return new Barrier (
+    return new BarrierCanvas (
         barrierStartX,
         barrierStartY,
         barrierWidth,

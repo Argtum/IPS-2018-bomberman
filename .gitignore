@@ -4,7 +4,10 @@
 *.md
 *.pdf
 *.xls
-vendor/
+vendor/composer
+vendor/symfony
+vendor/twig
+vendor/autoload.php
 .idea/
 .DS_Store
 build/

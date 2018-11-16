@@ -3,16 +3,18 @@
     <head>
         <title>Bomberman</title>
         <meta charset="utf-8">
-        {% block styles %}
-            {% include "/include/styles.twig" %}
-        {% endblock %}
+        <link rel="shortcut icon" href="web/img/bomberman.ico" type="image/x-icon">
+        <link rel="stylesheet" type="text/css" href="web/styles/foundation.min.css">
+        <link rel="stylesheet" type="text/css" href="web/styles/app.css">
     </head>
     <body>
         <article class="canvas-wrapper">
             {% block canvas %}{% endblock %}
         </article>
-        {% block js %}
-            {% include "/include/js.twig" %}
-        {% endblock %}
+        <script defer src="web/js/vendor/jquery.js"></script>
+        <script defer src="web/js/vendor/foundation.js"></script>
+        <script defer src="web/js/vendor/what-input.js"></script>
+        <script defer src="web/js/app.js"></script>
+        <script defer type="module" src="web/js/canvas.js"></script>
     </body>
 </html>

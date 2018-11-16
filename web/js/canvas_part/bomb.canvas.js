@@ -8,7 +8,7 @@ const FIRE_COLOR = '#FF0000';
 const EXPLOSION_TIME_FOR_CELL = 200; //в милисекундах
 const EXPLOSION_TIME = (EXPLOSION_TIME_FOR_CELL * FIRE_SIZE * 2) - EXPLOSION_TIME_FOR_CELL ; //в милисекундах
 
-function Bomb(bombX, bombY, radius, radiusStart, radiusEnd, bombColor, fireRadius, fireColor, explosionTime) {
+function BombCanvas(bombX, bombY, radius, radiusStart, radiusEnd, bombColor, fireRadius, fireColor, explosionTime) {
     this.x = bombX;
     this.y = bombY;
     this.radius = radius;
@@ -31,7 +31,7 @@ function createBomb(bombPositionX, bombPositionY) {
     const fireColor = FIRE_COLOR;
     const explosionTime = EXPLOSION_TIME;
 
-    return new Bomb (
+    return new BombCanvas (
         bombX,
         bombY,
         bombRadius,

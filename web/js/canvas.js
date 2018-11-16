@@ -1,133 +1,30 @@
-import {
-    createBomber,
-} from "./canvas_part/bomber.js";
+import {Vec2, Direction, createBomber} from "./canvas_part/bomber.canvas.js";
+import {ARENA_CELL, createArena} from "./canvas_part/arena.canvas.js";
+import {isRectContains, createBarriers} from "./canvas_part/barrier.canvas.js";
+import {BOMB_TIMEOUT, EXPLOSION_TIME, createBomb} from "./canvas_part/bomb.canvas.js";
+import {KeyCode, KeymapCanvas} from "./canvas_part/keymap.canvas.js";
+import {redraw} from "./canvas_part/draw.canvas.js";
 
-import {
-    ARENA_CELL,
-    createArena,
-} from "./canvas_part/arena.js";
+function update(dt, bomber, barriers, arena, explosions, keyMap) {
+    let directionForce = processKeyMapForBomber(bomber, keyMap);
+    const moveDistance = bomber.speed.multiplyScalar(dt).multiply(directionForce);
 
-import {
-    isRectContains,
-    createBarriers,
-} from "./canvas_part/barrier.js";
+    bomber.position = bomber.position.add(moveDistance);
 
-import {
-    BOMB_TIMEOUT,
-    EXPLOSION_TIME,
-    createBomb,
-} from "./canvas_part/bomb.js";
-
-const BUTTON = {
-    LEFT: 37,
-    UP: 38,
-    RIGHT: 39,
-    DOWN: 40,
-    SPACE: 32,
-};
-
-const DIRECTION = {
-    LEFT: -1,
-    UP: -1,
-    RIGHT: 1,
-    DOWN: 1,
-    NONE: 0,
-};
-
-function DrawBattleArena(ctx, arena) {
-    ctx.fillStyle = arena.backgroundColor;
-    ctx.fillRect(arena.startX, arena.startY, arena.arenaWidth, arena.arenaHeight);
-}
-
-function DrawBarrier(ctx, barrier) {
-    ctx.fillStyle = barrier.barrierColor;
-    ctx.fillRect(barrier.startX, barrier.startY, barrier.width, barrier.height);
-}
-
-function DrawBomb(ctx, bomb) {
-    ctx.fillStyle = bomb.color;
-    ctx.arc(bomb.x, bomb.y, bomb.radius, bomb.radiusStart, bomb.radiusEnd);
-    ctx.fill();
-    ctx.beginPath();
-}
-
-function DrawFire(ctx, explosions) {
-    ctx.fillStyle = explosions.fireColor;
-    ctx.fillRect(explosions.x - ARENA_CELL / 2, explosions.y - ARENA_CELL / 2, ARENA_CELL, ARENA_CELL);
-}
-
-function DrawBomber(ctx, bomber) {
-    ctx.fillStyle = bomber.bomberColor;
-    ctx.arc(bomber.x, bomber.y, bomber.radius, bomber.radiusStart, bomber.radiusEnd);
-    ctx.fill();
-    ctx.beginPath();
-}
-
-function redraw(ctx, arena, bomber, indestructibleBarriers, bombs, explosions) {
-    DrawBattleArena(ctx, arena);
-    for (const barrier of indestructibleBarriers) {
-        DrawBarrier(ctx, barrier);
-    }
-    if (bombs) {
-        for (const bomb of bombs) {
-            DrawBomb(ctx, bomb);
-        }
-    }
-    if (explosions) {
-        for (const explosion of explosions) {
-            DrawFire(ctx, explosion);
-        }
-    }
-    DrawBomber(ctx, bomber);
-}
-
-function update(dt, bomber, barriers, arena, explosions) {
-    const distance = dt * bomber.speed;
-
-    document.addEventListener("keydown", (buttonkey) => {
-        if (buttonkey.keyCode == BUTTON.LEFT) {
-            bomber.directionX = DIRECTION.LEFT;
-        }
-        if (buttonkey.keyCode == BUTTON.UP) {
-            bomber.directionY = DIRECTION.UP;
-        }
-        if (buttonkey.keyCode == BUTTON.RIGHT) {
-            bomber.directionX = DIRECTION.RIGHT;
-        }
-        if (buttonkey.keyCode == BUTTON.DOWN) {
-            bomber.directionY = DIRECTION.DOWN;
-        }
-    });
-
-    document.addEventListener("keyup", (buttonkey) => {
-        if (buttonkey.keyCode == BUTTON.LEFT) {
-            bomber.directionX = DIRECTION.NONE;
-        }
-        if (buttonkey.keyCode == BUTTON.UP) {
-            bomber.directionY = DIRECTION.NONE;
-        }
-        if (buttonkey.keyCode == BUTTON.RIGHT) {
-            bomber.directionX = DIRECTION.NONE;
-        }
-        if (buttonkey.keyCode == BUTTON.DOWN) {
-            bomber.directionY = DIRECTION.NONE;
-        }
-    });
-
-    const futureLeft = bomber.directionX * distance + bomber.x - bomber.radius - 1;
-    const futureRight = bomber.directionX * distance + bomber.x + bomber.radius + 1;
-    const futureUp = bomber.directionY * distance + bomber.y - bomber.radius - 1;
-    const futureDown = bomber.directionY * distance + bomber.y + bomber.radius + 1;
-
-    const isAllowedMove = checkArenaCollision(futureRight, futureLeft, futureDown, futureUp, arena);
-    const isCollision = checkBlocksCollision(futureRight, futureLeft, futureDown, futureUp, barriers);
-
-    if (isAllowedMove.x && !isCollision) {
-        bomber.x += bomber.directionX * distance;
-    }
-    if (isAllowedMove.y && !isCollision) {
-        bomber.y += bomber.directionY * distance;
-    }
+    // const futureLeft = moveDistance.x + bomber.position.x - bomber.radius - 1;
+    // const futureRight = moveDistance.x + bomber.position.x + bomber.radius + 1;
+    // const futureUp = moveDistance.y + bomber.position.y - bomber.radius - 1;
+    // const futureDown = moveDistance.y + bomber.position.y + bomber.radius + 1;
+    //
+    // const isAllowedMove = checkArenaCollision(futureRight, futureLeft, futureDown, futureUp, arena);
+    // const isCollision = checkBlocksCollision(futureRight, futureLeft, futureDown, futureUp, barriers);
+    //
+    // if (isAllowedMove.x && !isCollision) {
+    //     bomber.position = bomber.position.add(moveDistance);
+    // }
+    // if (isAllowedMove.y && !isCollision) {
+    //     bomber.position = bomber.position.add(moveDistance);
+    // }
 }
 
 function checkArenaCollision(xMax, xMin, yMax, yMin, arena) {
@@ -160,6 +57,23 @@ function checkBlocksCollision(right, left, down, up, barriers) {
     return isCollision;
 }
 
+function processKeyMapForBomber(bomber, keyMap) {
+    let directionForce = Vec2.ZERO;
+    if (keyMap.isPressed(KeyCode.LEFT_ARROW)) {
+        directionForce = directionForce.add(Direction.LEFT);
+    }
+    if (keyMap.isPressed(KeyCode.RIGHT_ARROW)) {
+        directionForce = directionForce.add(Direction.RIGHT);
+    }
+    if (keyMap.isPressed(KeyCode.UP_ARROW)) {
+        directionForce = directionForce.add(Direction.UP);
+    }
+    if (keyMap.isPressed(KeyCode.DOWN_ARROW)) {
+        directionForce = directionForce.add(Direction.DOWN);
+    }
+    return directionForce;
+}
+
 function main() {
     const canvas = document.getElementById('canvas');
     canvas.width = canvas.offsetWidth;
@@ -169,8 +83,10 @@ function main() {
     const bomberStartPositionX = 25;
     const bomberStartPositionY = 25;
 
-    let bomber = createBomber(bomberStartPositionX, bomberStartPositionY);
-    let arena = createArena();
+    const position = new Vec2(bomberStartPositionX, bomberStartPositionY);
+    const bomber = createBomber(position);
+
+    const arena = createArena();
 
     const indestructibleBarriers = [];
     for(let y = ARENA_CELL; y < arena.arenaHeight; y+= ARENA_CELL * 2) {
@@ -179,23 +95,31 @@ function main() {
         }
     }
 
+    const keyMap = new KeymapCanvas();
+
+    document.addEventListener("keydown", (event) => {
+        keyMap.onKeyDown(event.keyCode);
+    });
+
+    document.addEventListener("keyup", (event) => {
+        keyMap.onKeyUp(event.keyCode);
+    });
+
     const bombs = [];
     const explosions = [];
-    document.addEventListener("keydown", (buttonkey) => {
-        if (buttonkey.keyCode == BUTTON.SPACE) {
-            bombs.push(createBomb(bomber.x, bomber.y));
-            setTimeout(() => {
-                if (bombs) {
-                    explosions.push(bombs.shift());
-                    setTimeout(() => {
-                        if (explosions) {
-                            explosions.shift();
-                        }
-                    }, EXPLOSION_TIME);
-                }
-            }, BOMB_TIMEOUT);
-        }
-    });
+    if (keyMap.isPressed(KeyCode.SPACE)) {
+        bombs.push(createBomb(bomber.x, bomber.y));
+        setTimeout(() => {
+            if (bombs) {
+                explosions.push(bombs.shift());
+                setTimeout(() => {
+                    if (explosions) {
+                        explosions.shift();
+                    }
+                }, EXPLOSION_TIME);
+            }
+        }, BOMB_TIMEOUT);
+    }
 
     redraw(ctx, arena, bomber, indestructibleBarriers, bombs);
 
@@ -205,7 +129,7 @@ function main() {
         const deltaTime = (currentTimeStamp - lastTimestamp) * 0.001; //сколько секунд прошло с прошлого кадра
         lastTimestamp = currentTimeStamp;
 
-        update(deltaTime, bomber, indestructibleBarriers, arena, explosions);
+        update(deltaTime, bomber, indestructibleBarriers, arena, explosions, keyMap);
         redraw(ctx, arena, bomber, indestructibleBarriers, bombs, explosions);
         requestAnimationFrame(animateFn);
     };
