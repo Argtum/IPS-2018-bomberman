@@ -11,11 +11,6 @@ function BarrierCanvas(barrierStartX, barrierStartY, barrierWidth, barrierHeight
     this.barrierColor = barrierColor;
 }
 
-function isRectContains(x, y, barrier) {
-    return  (x >= barrier.startX && x <= barrier.startX + barrier.width) &&
-        (y >= barrier.startY && y <= barrier.startY + barrier.height)
-}
-
 function createBarriers(startPositionX, startPositionY) {
     const barrierStartX = BARRIER_CORRECTION + startPositionX;
     const barrierStartY = BARRIER_CORRECTION + startPositionY;
@@ -33,6 +28,5 @@ function createBarriers(startPositionX, startPositionY) {
 }
 
 export {
-    isRectContains,
     createBarriers,
 };

@@ -58,6 +58,7 @@ function createBomber(position) {
 
 export {
     Vec2,
+    BOMBERMAN_RADIUS,
     Direction,
     createBomber,
 };

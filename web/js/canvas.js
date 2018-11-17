@@ -1,60 +1,16 @@
 import {Vec2, Direction, createBomber} from "./canvas_part/bomber.canvas.js";
 import {ARENA_CELL, createArena} from "./canvas_part/arena.canvas.js";
-import {isRectContains, createBarriers} from "./canvas_part/barrier.canvas.js";
+import {createBarriers} from "./canvas_part/barrier.canvas.js";
 import {BOMB_TIMEOUT, EXPLOSION_TIME, createBomb} from "./canvas_part/bomb.canvas.js";
 import {KeyCode, KeymapCanvas} from "./canvas_part/keymap.canvas.js";
 import {redraw} from "./canvas_part/draw.canvas.js";
+import {collisionsProcessing} from "./canvas_part/collisions.canvas.js";
 
 function update(dt, bomber, barriers, arena, explosions, keyMap) {
-    let directionForce = processKeyMapForBomber(bomber, keyMap);
+    const directionForce = processKeyMapForBomber(bomber, keyMap);
     const moveDistance = bomber.speed.multiplyScalar(dt).multiply(directionForce);
 
-    bomber.position = bomber.position.add(moveDistance);
-
-    // const futureLeft = moveDistance.x + bomber.position.x - bomber.radius - 1;
-    // const futureRight = moveDistance.x + bomber.position.x + bomber.radius + 1;
-    // const futureUp = moveDistance.y + bomber.position.y - bomber.radius - 1;
-    // const futureDown = moveDistance.y + bomber.position.y + bomber.radius + 1;
-    //
-    // const isAllowedMove = checkArenaCollision(futureRight, futureLeft, futureDown, futureUp, arena);
-    // const isCollision = checkBlocksCollision(futureRight, futureLeft, futureDown, futureUp, barriers);
-    //
-    // if (isAllowedMove.x && !isCollision) {
-    //     bomber.position = bomber.position.add(moveDistance);
-    // }
-    // if (isAllowedMove.y && !isCollision) {
-    //     bomber.position = bomber.position.add(moveDistance);
-    // }
-}
-
-function checkArenaCollision(xMax, xMin, yMax, yMin, arena) {
-    let allowedMove = {};
-    allowedMove.x = true;
-    allowedMove.y = true;
-
-    if (xMin < 0 || xMax > arena.arenaWidth) {
-        allowedMove.x = false;
-    }
-
-    if (yMin < 0 || yMax > arena.arenaHeight) {
-        allowedMove.y = false;
-    }
-
-    return allowedMove;
-}
-
-function checkBlocksCollision(right, left, down, up, barriers) {
-    let isCollision = false;
-
-    for (const barrier of barriers) {
-        if ((!isCollision) && ( isRectContains(right, down, barrier) ||
-                                isRectContains(left, down, barrier) ||
-                                isRectContains(left, up, barrier) ||
-                                isRectContains(right, up, barrier))) {
-            isCollision = true;
-        }
-    }
-    return isCollision;
+    bomber.position = bomber.position.add(collisionsProcessing(bomber, barriers, arena, moveDistance));
 }
 
 function processKeyMapForBomber(bomber, keyMap) {
