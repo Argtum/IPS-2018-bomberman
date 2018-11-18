@@ -3,6 +3,7 @@ const BOMBERMAN_SPEED = new Vec2(200, 200);
 const BOMBER_START_ANGLE = 0;
 const BOMBER_END_ANGLE = Math.PI * 2;
 const BOMBERMAN_COLOR = '#999';
+const NUMBERS_OF_BOMBS = 1;
 
 function Vec2(x, y) {
     this.x = x;
@@ -29,22 +30,26 @@ const Direction = {
 };
 Object.freeze(Direction);
 
-function BomberCanvas(bomberPosition, bomberSpeed, bomberRadius, bomberColor, bomberStartAngle, bomberEndAngle) {
+function BomberCanvas(bomberPosition, bomberSpeed, bomberRadius, bomberColor, bomberStartAngle, bomberEndAngle, numberOfBombs, serialNumber) {
     this.radius = bomberRadius;
     this.speed = bomberSpeed;
     this.bomberColor = bomberColor;
     this.radiusStart = bomberStartAngle;
     this.radiusEnd = bomberEndAngle;
     this.position = bomberPosition;
+    this.numberOfBombs = numberOfBombs;
+    this.number = serialNumber;
 }
 
-function createBomber(position) {
+function createBomber(position, number) {
     const bomberPosition = position;
     const bomberSpeed = BOMBERMAN_SPEED;
     const bomberRadius = BOMBERMAN_RADIUS;
     const bomberColor = BOMBERMAN_COLOR;
     const bomberStartAngle = BOMBER_START_ANGLE;
     const bomberEndAngle = BOMBER_END_ANGLE;
+    const numberOfBombs = NUMBERS_OF_BOMBS;
+    const serialNumber = number;
 
     return new BomberCanvas (
         bomberPosition,
@@ -53,6 +58,8 @@ function createBomber(position) {
         bomberColor,
         bomberStartAngle,
         bomberEndAngle,
+        numberOfBombs,
+        serialNumber,
     );
 }
 
