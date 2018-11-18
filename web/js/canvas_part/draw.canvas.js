@@ -12,15 +12,15 @@ function DrawBarrier(ctx, barrier) {
 
 function DrawBomb(ctx, bomb) {
     ctx.fillStyle = bomb.color;
-    ctx.arc(bomb.x, bomb.y, bomb.radius, bomb.radiusStart, bomb.radiusEnd);
+    ctx.arc(bomb.position.x, bomb.position.y, bomb.radius, bomb.radiusStart, bomb.radiusEnd);
     ctx.fill();
     ctx.beginPath();
 }
 
-function DrawFire(ctx, explosions) {
-    ctx.fillStyle = explosions.fireColor;
-    ctx.fillRect(explosions.x - ARENA_CELL / 2, explosions.y - ARENA_CELL / 2, ARENA_CELL, ARENA_CELL);
-}
+// function DrawFire(ctx, explosions) {
+//     ctx.fillStyle = explosions.fireColor;
+//     ctx.fillRect(explosions.x - ARENA_CELL / 2, explosions.y - ARENA_CELL / 2, ARENA_CELL, ARENA_CELL);
+// }
 
 function DrawBomber(ctx, bomber) {
     ctx.fillStyle = bomber.bomberColor;
@@ -29,7 +29,7 @@ function DrawBomber(ctx, bomber) {
     ctx.beginPath();
 }
 
-function redraw(ctx, arena, bomber, indestructibleBarriers, bombs, explosions) {
+function redraw(ctx, arena, bomber, indestructibleBarriers, bombs) {
     DrawBattleArena(ctx, arena);
     for (const barrier of indestructibleBarriers) {
         DrawBarrier(ctx, barrier);
@@ -37,11 +37,6 @@ function redraw(ctx, arena, bomber, indestructibleBarriers, bombs, explosions) {
     if (bombs) {
         for (const bomb of bombs) {
             DrawBomb(ctx, bomb);
-        }
-    }
-    if (explosions) {
-        for (const explosion of explosions) {
-            DrawFire(ctx, explosion);
         }
     }
     DrawBomber(ctx, bomber);
