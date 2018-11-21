@@ -1,13 +1,13 @@
-const KeyCode = {
+const keyCode = {
     SPACE: 32,
     LEFT_ARROW: 37,
     UP_ARROW: 38,
     RIGHT_ARROW: 39,
     DOWN_ARROW: 40
 };
-Object.freeze(KeyCode);
+Object.freeze(keyCode);
 
-function KeymapCanvas() {
+function keymapCanvas() {
     this._map = {};
 
     this.onKeyDown = function(keyCode) {
@@ -26,6 +26,6 @@ function KeymapCanvas() {
 }
 
 export {
-    KeyCode,
-    KeymapCanvas,
+    keyCode,
+    keymapCanvas,
 };

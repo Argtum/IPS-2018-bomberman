@@ -1,8 +1,8 @@
 import {Vec2, Direction, createBomber} from "./canvas_part/bomber.canvas.js";
-import {ARENA_CELL, createArena} from "./canvas_part/arena.canvas.js";
+import {ARENA_CELL, createArena, createArenaMap, arenaMap, arenaMapProcessing} from "./canvas_part/arena.canvas.js";
 import {createBarriers} from "./canvas_part/barrier.canvas.js";
 import {FIRE_COLOR, BOMB_LIFETIME, EXPLOSION_TIME, createBomb} from "./canvas_part/bomb.canvas.js";
-import {KeyCode, KeymapCanvas} from "./canvas_part/keymap.canvas.js";
+import {keyCode, keymapCanvas} from "./canvas_part/keymap.canvas.js";
 import {redraw} from "./canvas_part/draw.canvas.js";
 import {collisionsProcessing} from "./canvas_part/collisions.canvas.js";
 
@@ -36,7 +36,7 @@ function update(dt, bombers, barriers, arena, keyMap, bombs, allowedPlacesForBom
 
 function processKeyMapForBomb(bombs, keyMap, allowedPlacesForBomb, bomber)
 {
-    if (keyMap.isPressed(KeyCode.SPACE)) {
+    if (keyMap.isPressed(keyCode.SPACE)) {
         const bombPosition = searchPlace(allowedPlacesForBomb, bomber);
         let isUniqueBomb = true;
         if (bombs) {
@@ -56,16 +56,16 @@ function processKeyMapForBomb(bombs, keyMap, allowedPlacesForBomb, bomber)
 function processKeyMapForBomber(bomber, keyMap)
 {
     let directionForce = Vec2.ZERO;
-    if (keyMap.isPressed(KeyCode.LEFT_ARROW)) {
+    if (keyMap.isPressed(keyCode.LEFT_ARROW)) {
         directionForce = directionForce.add(Direction.LEFT);
     }
-    if (keyMap.isPressed(KeyCode.RIGHT_ARROW)) {
+    if (keyMap.isPressed(keyCode.RIGHT_ARROW)) {
         directionForce = directionForce.add(Direction.RIGHT);
     }
-    if (keyMap.isPressed(KeyCode.UP_ARROW)) {
+    if (keyMap.isPressed(keyCode.UP_ARROW)) {
         directionForce = directionForce.add(Direction.UP);
     }
-    if (keyMap.isPressed(KeyCode.DOWN_ARROW)) {
+    if (keyMap.isPressed(keyCode.DOWN_ARROW)) {
         directionForce = directionForce.add(Direction.DOWN);
     }
     return directionForce;
@@ -99,6 +99,7 @@ function main() {
     }
 
     const arena = createArena();
+    const arenaMap = createArenaMap();
 
     const barriers = [];
     for(let y = ARENA_CELL; y < arena.arenaHeight; y += ARENA_CELL * 2) {
@@ -114,7 +115,7 @@ function main() {
         }
     }
 
-    const keyMap = new KeymapCanvas();
+    const keyMap = new keymapCanvas();
 
     document.addEventListener("keydown", (event) => {
         keyMap.onKeyDown(event.keyCode);
