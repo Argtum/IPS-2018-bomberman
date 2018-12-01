@@ -24,10 +24,10 @@ function barrierCollisions(bomber, moveDistance, nextPosition, place)
     for (let j = 0; j < NUMBER_OF_CELL_Y; j++) {
         for(let i = 0; i < NUMBER_OF_CELL_X; i++) {
             if (!isCollision && place.whatType(i, j) == "barrier" &&
-                nextPosition.x >= (place.getObj(i, j).startX - BOMBERMAN_RADIUS) &&
-                nextPosition.x <= (place.getObj(i, j).startX + place.getObj(i, j).width + BOMBERMAN_RADIUS) &&
-                nextPosition.y >= (place.getObj(i, j).startY - BOMBERMAN_RADIUS) &&
-                nextPosition.y <= (place.getObj(i, j).startY + place.getObj(i, j).height + BOMBERMAN_RADIUS)) {
+                nextPosition.x >= (place.getObj(i, j).position.x - BOMBERMAN_RADIUS) &&
+                nextPosition.x <= (place.getObj(i, j).position.x + place.getObj(i, j).width + BOMBERMAN_RADIUS) &&
+                nextPosition.y >= (place.getObj(i, j).position.y - BOMBERMAN_RADIUS) &&
+                nextPosition.y <= (place.getObj(i, j).position.y + place.getObj(i, j).height + BOMBERMAN_RADIUS)) {
 
                 if (nextPosition.x == bomber.position.x) {
                     moveDistance = moveDistance.multiply(Y_COLLISION);
