@@ -19,12 +19,12 @@ function update(dt, bombers, arena, keyMap, place)
     ticTak(place, dt);
 }
 
-// function getCurrentPosition(bomber) {
-//     const xPosition = Math.ceil(bomber.position.x / ARENA_CELL);
-//     const yPosition = Math.ceil(bomber.position.y / ARENA_CELL);
-//
-//     return new Vec2(xPosition, yPosition);
-// }
+function getCurrentPosition(bomber) {
+    const xPosition = Math.ceil(bomber.position.x / ARENA_CELL);
+    const yPosition = Math.ceil(bomber.position.y / ARENA_CELL);
+
+    return new Vec2(xPosition * ARENA_CELL - ARENA_CELL / 2, yPosition * ARENA_CELL - ARENA_CELL / 2);
+}
 
 function processKeyMapForBomb(keyMap, bomber, place)
 {
@@ -32,7 +32,7 @@ function processKeyMapForBomb(keyMap, bomber, place)
         for (let j = 0; j < NUMBER_OF_CELL_Y; j++) {
             for(let i = 0; i < NUMBER_OF_CELL_X; i++) {
                 if (place.whatType(i, j) == "empty") {
-                    place.takePlace(createBomb(bomber.position, BOMB_LIFETIME, bomber.whoseBomb), 'bomb');
+                    place.takePlace(createBomb(getCurrentPosition(bomber), BOMB_LIFETIME, bomber.whoseBomb), 'bomb');
                 }
             }
         }
