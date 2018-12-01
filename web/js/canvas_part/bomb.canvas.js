@@ -1,4 +1,6 @@
 import {NUMBER_OF_CELL_X, NUMBER_OF_CELL_Y} from "./arena.canvas.js";
+import {keyCode} from "./keymap.canvas.js";
+import {getCurrentPosition} from "./arena.canvas.js";
 
 const BOMB_RADIUS = 22;
 const BOMB_START_ANGLE = 0;
@@ -64,8 +66,20 @@ function ticTak(place, dt)
     }
 }
 
+function processKeyMapForBomb(keyMap, bomber, place)
+{
+    if (keyMap.isPressed(keyCode.SPACE)) {
+        for (let j = 0; j < NUMBER_OF_CELL_Y; j++) {
+            for(let i = 0; i < NUMBER_OF_CELL_X; i++) {
+                if (place.whatType(i, j) == "empty") {
+                    place.takePlace(createBomb(getCurrentPosition(bomber), BOMB_LIFETIME, bomber.whoseBomb), 'bomb');
+                }
+            }
+        }
+    }
+}
+
 export {
-    BOMB_LIFETIME,
+    processKeyMapForBomb,
     ticTak,
-    createBomb,
 };

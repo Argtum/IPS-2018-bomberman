@@ -1,3 +1,5 @@
+import {keyCode} from "./keymap.canvas.js";
+
 const BOMBERMAN_RADIUS = 22;
 const BOMBERMAN_SPEED = new Vec2(200, 200);
 const BOMBER_START_ANGLE = 0;
@@ -65,11 +67,29 @@ function createBomber(position, number) {
     );
 }
 
+function processKeyMapForBomber(bomber, keyMap)
+{
+    let directionForce = Vec2.ZERO;
+    if (keyMap.isPressed(keyCode.LEFT_ARROW)) {
+        directionForce = directionForce.add(Direction.LEFT);
+    }
+    if (keyMap.isPressed(keyCode.RIGHT_ARROW)) {
+        directionForce = directionForce.add(Direction.RIGHT);
+    }
+    if (keyMap.isPressed(keyCode.UP_ARROW)) {
+        directionForce = directionForce.add(Direction.UP);
+    }
+    if (keyMap.isPressed(keyCode.DOWN_ARROW)) {
+        directionForce = directionForce.add(Direction.DOWN);
+    }
+    return directionForce;
+}
+
 export {
     Vec2,
     BOMBERMAN_RADIUS,
     BOMBERMAN_START_POSITION_X,
     BOMBERMAN_START_POSITION_Y,
-    Direction,
+    processKeyMapForBomber,
     createBomber,
 };
