@@ -29,42 +29,9 @@ function createArena() {
     );
 }
 
-function getCellKey(j, i) {
-    return j.toString() + i.toString();
-}
-
-function createArenaMap() {
-    let arenaMap = {};
-    for(let j = 0; j < NUMBER_OF_CELL_Y; j++) {
-        for(let i = 0; i < NUMBER_OF_CELL_X; i++) {
-            const key = getCellKey(j, i);
-            arenaMap[key] = {x:j, y:i};
-        }
-    }
-    return arenaMap;
-}
-
-function arenaMapProcessing() {
-    this._cellMap = {};
-
-    this.add = function(objPlace) {
-        this._cellMap[objPlace] = true;
-    };
-
-    this.remove = function(objPlace) {
-        delete this._cellMap[objPlace];
-    };
-
-    this.isEmpty = function(objPlace) {
-        return !Boolean(this._cellMap[objPlace]);
-    };
-
-    Object.freeze(this);
-}
-
 export {
+    NUMBER_OF_CELL_X,
+    NUMBER_OF_CELL_Y,
     ARENA_CELL,
     createArena,
-    createArenaMap,
-    arenaMapProcessing,
 };

@@ -1,3 +1,5 @@
+import {NUMBER_OF_CELL_X, NUMBER_OF_CELL_Y} from "./arena.canvas.js";
+
 const BOMB_RADIUS = 22;
 const BOMB_START_ANGLE = 0;
 const BOMB_END_ANGLE = Math.PI * 2;
@@ -43,9 +45,27 @@ function createBomb(position, lt, bomber) {
     );
 }
 
+function ticTak(place, dt)
+{
+    for (let j = 0; j < NUMBER_OF_CELL_Y; j++) {
+        for (let i = 0; i < NUMBER_OF_CELL_X; i++) {
+            if (place.whatType(i, j) == 'bomb') {
+                place.getObj(i, j).lifeTime -= dt;
+            }
+
+            if (place.getObj(i, j).lifeTime <= EXPLOSION_TIME) {
+                place.getObj(i, j).color = FIRE_COLOR;
+            }
+
+            if (place.getObj(i, j).lifeTime <= 0) {
+                place.freePlace(i, j);
+            }
+        }
+    }
+}
+
 export {
-    FIRE_COLOR,
     BOMB_LIFETIME,
-    EXPLOSION_TIME,
+    ticTak,
     createBomb,
 };

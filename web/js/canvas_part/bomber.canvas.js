@@ -4,6 +4,8 @@ const BOMBER_START_ANGLE = 0;
 const BOMBER_END_ANGLE = Math.PI * 2;
 const BOMBERMAN_COLOR = '#999';
 const NUMBERS_OF_BOMBS = 1;
+const BOMBERMAN_START_POSITION_X = 25;
+const BOMBERMAN_START_POSITION_Y = 25;
 
 function Vec2(x, y) {
     this.x = x;
@@ -66,6 +68,8 @@ function createBomber(position, number) {
 export {
     Vec2,
     BOMBERMAN_RADIUS,
+    BOMBERMAN_START_POSITION_X,
+    BOMBERMAN_START_POSITION_Y,
     Direction,
     createBomber,
 };

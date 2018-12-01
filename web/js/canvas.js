@@ -1,54 +1,40 @@
-import {Vec2, Direction, createBomber} from "./canvas_part/bomber.canvas.js";
-import {ARENA_CELL, createArena, createArenaMap, arenaMap, arenaMapProcessing} from "./canvas_part/arena.canvas.js";
+import {Vec2, BOMBERMAN_START_POSITION_X, BOMBERMAN_START_POSITION_Y, Direction, createBomber} from "./canvas_part/bomber.canvas.js";
+import {NUMBER_OF_CELL_X, NUMBER_OF_CELL_Y, ARENA_CELL, createArena} from "./canvas_part/arena.canvas.js";
 import {createBarriers} from "./canvas_part/barrier.canvas.js";
-import {FIRE_COLOR, BOMB_LIFETIME, EXPLOSION_TIME, createBomb} from "./canvas_part/bomb.canvas.js";
-import {keyCode, keymapCanvas} from "./canvas_part/keymap.canvas.js";
+import {BOMB_LIFETIME, ticTak, createBomb} from "./canvas_part/bomb.canvas.js";
+import {keyCode, KeymapCanvas} from "./canvas_part/keymap.canvas.js";
 import {redraw} from "./canvas_part/draw.canvas.js";
 import {collisionsProcessing} from "./canvas_part/collisions.canvas.js";
+import {ArenaPlaces} from "./canvas_part/arenaMap.canvas.js";
 
-function update(dt, bombers, barriers, arena, keyMap, bombs, allowedPlacesForBomb)
+function update(dt, bombers, arena, keyMap, place)
 {
     for (const bomber of bombers) {
         const directionForce = processKeyMapForBomber(bomber, keyMap);
         const moveDistance = bomber.speed.multiplyScalar(dt).multiply(directionForce);
 
-        bomber.position = bomber.position.add(collisionsProcessing(bomber, barriers, arena, moveDistance));
-        processKeyMapForBomb(bombs, keyMap, allowedPlacesForBomb, bomber);
+        bomber.position = bomber.position.add(collisionsProcessing(bomber, arena, moveDistance, place));
+        processKeyMapForBomb(keyMap, bomber, place);
     }
-
-    if (bombs) {
-        for (let i = 0; i < bombs.length; i++) {
-            bombs[i].lifeTime -= dt;
-            if (bombs[i].lifeTime <= 0) {
-                bombs.splice(i, 1);
-            }
-        }
-    }
-
-    if (bombs) {
-        for (const bomb of bombs) {
-            if (bomb.lifeTime <= EXPLOSION_TIME) {
-                bomb.color = FIRE_COLOR;
-            }
-        }
-    }
+    ticTak(place, dt);
 }
 
-function processKeyMapForBomb(bombs, keyMap, allowedPlacesForBomb, bomber)
+// function getCurrentPosition(bomber) {
+//     const xPosition = Math.ceil(bomber.position.x / ARENA_CELL);
+//     const yPosition = Math.ceil(bomber.position.y / ARENA_CELL);
+//
+//     return new Vec2(xPosition, yPosition);
+// }
+
+function processKeyMapForBomb(keyMap, bomber, place)
 {
     if (keyMap.isPressed(keyCode.SPACE)) {
-        const bombPosition = searchPlace(allowedPlacesForBomb, bomber);
-        let isUniqueBomb = true;
-        if (bombs) {
-            for (const bomb of bombs) {
-                if (isUniqueBomb && bomb.position == bombPosition) {
-                    isUniqueBomb = false;
+        for (let j = 0; j < NUMBER_OF_CELL_Y; j++) {
+            for(let i = 0; i < NUMBER_OF_CELL_X; i++) {
+                if (place.whatType(i, j) == "empty") {
+                    place.takePlace(createBomb(bomber.position, BOMB_LIFETIME, bomber.whoseBomb), 'bomb');
                 }
             }
-        }
-
-        if (isUniqueBomb) {
-            bombs.push(createBomb(bombPosition, BOMB_LIFETIME));
         }
     }
 }
@@ -71,24 +57,14 @@ function processKeyMapForBomber(bomber, keyMap)
     return directionForce;
 }
 
-function searchPlace(allowedPlacesForBomb, bomber)
-{
-    for (const allowedPlace of allowedPlacesForBomb)
-    {
-        if (Math.abs(allowedPlace.x - bomber.position.x) <= 25 && Math.abs(allowedPlace.y - bomber.position.y) <= 25) {
-            return allowedPlace;
-        }
-    }
-}
-
 function main() {
     const canvas = document.getElementById('canvas');
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
     const ctx = canvas.getContext('2d');
 
-    const bomberStartPositionX = 25;
-    const bomberStartPositionY = 25;
+    const bomberStartPositionX = BOMBERMAN_START_POSITION_X;
+    const bomberStartPositionY = BOMBERMAN_START_POSITION_Y;
 
     const position = new Vec2(bomberStartPositionX, bomberStartPositionY);
     const numberOfBomber = 1;
@@ -99,23 +75,16 @@ function main() {
     }
 
     const arena = createArena();
-    const arenaMap = createArenaMap();
+    const place = new ArenaPlaces();
 
-    const barriers = [];
     for(let y = ARENA_CELL; y < arena.arenaHeight; y += ARENA_CELL * 2) {
         for(let x = ARENA_CELL; x < arena.arenaWidth; x += ARENA_CELL * 2) {
-            barriers.push(createBarriers(x, y));
+            const barrierPosition = new Vec2(x, y);
+            place.takePlace(createBarriers(barrierPosition), 'barrier');
         }
     }
 
-    const allowedPlacesForBomb = [];
-    for(let y = ARENA_CELL / 2; y < arena.arenaHeight; y += ARENA_CELL) {
-        for(let x = ARENA_CELL / 2; x < arena.arenaWidth; x += ARENA_CELL) {
-            allowedPlacesForBomb.push(new Vec2(x, y));
-        }
-    }
-
-    const keyMap = new keymapCanvas();
+    const keyMap = new KeymapCanvas();
 
     document.addEventListener("keydown", (event) => {
         keyMap.onKeyDown(event.keyCode);
@@ -125,9 +94,7 @@ function main() {
         keyMap.onKeyUp(event.keyCode);
     });
 
-    let bombs = [];
-
-    redraw(ctx, arena, bombers, barriers, bombs);
+    redraw(ctx, arena, bombers, place);
 
     let lastTimestamp = Date.now();
     const animateFn = () => {
@@ -135,8 +102,8 @@ function main() {
         const deltaTime = (currentTimeStamp - lastTimestamp) * 0.001; //сколько секунд прошло с прошлого кадра
         lastTimestamp = currentTimeStamp;
 
-        update(deltaTime, bombers, barriers, arena, keyMap, bombs, allowedPlacesForBomb);
-        redraw(ctx, arena, bombers, barriers, bombs);
+        update(deltaTime, bombers, arena, keyMap, place);
+        redraw(ctx, arena, bombers, place);
         requestAnimationFrame(animateFn);
     };
     animateFn();

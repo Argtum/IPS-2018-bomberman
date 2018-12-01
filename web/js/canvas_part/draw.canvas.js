@@ -1,3 +1,5 @@
+import {NUMBER_OF_CELL_X, NUMBER_OF_CELL_Y} from "./arena.canvas.js";
+
 function DrawBattleArena(ctx, arena) {
     ctx.fillStyle = arena.backgroundColor;
     ctx.fillRect(arena.startX, arena.startY, arena.arenaWidth, arena.arenaHeight);
@@ -5,7 +7,7 @@ function DrawBattleArena(ctx, arena) {
 
 function DrawBarrier(ctx, barrier) {
     ctx.fillStyle = barrier.barrierColor;
-    ctx.fillRect(barrier.startX, barrier.startY, barrier.width, barrier.height);
+    ctx.fillRect(barrier.position.x, barrier.position.y, barrier.width, barrier.height);
 }
 
 function DrawBomb(ctx, bomb) {
@@ -22,16 +24,19 @@ function DrawBomber(ctx, bomber) {
     ctx.beginPath();
 }
 
-function redraw(ctx, arena, bombers, indestructibleBarriers, bombs) {
+function redraw(ctx, arena, bombers, place) {
     DrawBattleArena(ctx, arena);
-    for (const barrier of indestructibleBarriers) {
-        DrawBarrier(ctx, barrier);
-    }
-    if (bombs) {
-        for (const bomb of bombs) {
-            DrawBomb(ctx, bomb);
+    for (let j = 0; j < NUMBER_OF_CELL_Y; j++) {
+        for(let i = 0; i < NUMBER_OF_CELL_X; i++) {
+            const currentPlaceType = place.whatType(i, j);
+            if (currentPlaceType == 'barrier') {
+                DrawBarrier(ctx, place.getObj(i, j));
+            } else if(currentPlaceType == 'bomb') {
+                DrawBomb(ctx, place.getObj(i, j));
+            }
         }
     }
+
     if (bombers) {
         for (const bomber of bombers) {
             DrawBomber(ctx, bomber);

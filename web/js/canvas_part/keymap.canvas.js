@@ -7,7 +7,7 @@ const keyCode = {
 };
 Object.freeze(keyCode);
 
-function keymapCanvas() {
+function KeymapCanvas() {
     this._map = {};
 
     this.onKeyDown = function(keyCode) {
@@ -27,5 +27,5 @@ function keymapCanvas() {
 
 export {
     keyCode,
-    keymapCanvas,
+    KeymapCanvas,
 };
