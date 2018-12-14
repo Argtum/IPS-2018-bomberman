@@ -4,81 +4,136 @@
         <title>Bomberman</title>
         <meta charset="utf-8">
         <link rel="shortcut icon" href="web/img/bomberman.ico" type="image/x-icon">
-        <link rel="stylesheet" type="text/css" href="web/styles/foundation.min.css">
-        <link rel="stylesheet" type="text/css" href="web/styles/app.css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:700&amp;subset=cyrillic" rel="stylesheet">
+        <link rel="stylesheet" href="web/styles/bootstrap.min.css">
+        <link rel="stylesheet" href="web/styles/app.css">
     </head>
     <body>
-        <h1 class="text-center">BOMBERMAN</h1>
-
-
-        {#<div class="grid-x clear">#}
-            {#<div class="small-6">#}
-                {#<form class="login-form" method="POST">#}
-                    {#<div class="login-form__field">#}
-                        {#<label class="login-form__field_label" for="login-username">#}
-                            {#Login#}
-                        {#</label>#}
-                        {#<br>#}
-                        {#<input id="login-username" class="login-form__field_login" type="text">#}
-                    {#</div>#}
-                    {#<div class="login-form__field">#}
-                        {#<label class="login-form__field_label" for="login-password">#}
-                            {#Password#}
-                        {#</label>#}
-                        {#<br>#}
-                        {#<input id="login-password" class="login-form__field_password" type="password">#}
-                    {#</div>#}
-                    {#<div class="login-form__button">#}
-                        {#<input class="login-form__button_submit" id="login" type="submit" value="Войти">#}
-                    {#</div>#}
-                {#</form>#}
-            {#</div>#}
-        {#</div>#}
-
-
-        {#<div class="grid-x clear">#}
-            {#<div class="small-6">#}
-                {#<form class="register-form" method="POST">#}
-                    {#<div class="register-form__field">#}
-                        {#<label class="register-form__field_label" for="register-username">#}
-                            {#Login#}
-                        {#</label>#}
-                        {#<br>#}
-                        {#<input id="register-username" class="register-form__field_login" type="text">#}
-                    {#</div>#}
-                    {#<div class="register-form__field">#}
-                        {#<label class="register-form__field_label" for="register-password">#}
-                            {#Password#}
-                        {#</label>#}
-                        {#<br>#}
-                        {#<input id="register-password" class="register-form__field_password" type="password">#}
-                    {#</div>#}
-                    {#<div class="register-form__field">#}
-                        {#<label class="register-form__field_label" for="register-confirm-password">#}
-                            {#Password confirm#}
-                        {#</label>#}
-                        {#<br>#}
-                        {#<input id="register-confirm-password" class="register-form__field_password" type="password">#}
-                    {#</div>#}
-                    {#<div class="register-form__button">#}
-                        {#<input class="register-form__button_submit" id="register" type="submit" value="Войти">#}
-                    {#</div>#}
-                {#</form>#}
-            {#</div>#}
-        {#</div>#}
-
-        {#<div class="grid-x clear">#}
-            {#<div class="small-8">#}
-                <article class="canvas-wrapper">
-                    {% block canvas %}{% endblock %}
+        <header class="clearfix d-flex justify-content-center">
+            <h1 class="d-none">BOMBERMAN</h1>
+            <img src="web/img/logo.png" class="main__logo" alt="game_logo">
+        </header>
+        <div class="container">
+            <div class="row">
+                <article class="col-sm-12 main d-flex justify-content-center">
+                    <div class="main__content">
+                        <img src="web/img/bomberman_face.jpg" class="main__content_start-gemeplay d-block" alt="game_window">
+                        <button type="button" class="main__content_button btn btn-info btn-lg float-left">Описание</button>
+                        <button type="button" class="main__content_button btn btn-success btn-lg float-right" data-toggle="modal" data-target="#login">
+                            Начать игру
+                        </button>
+                        <div class="modal fade" id="login">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Авторизуйтесь</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="modal_form" method="POST">
+                                            <div class="input-group login__field">
+                                                <div class="input-group-prepend login__field_text">
+                                                    <span class="input-group-text" id="login-name">Ваш логин</span>
+                                                </div>
+                                                <input type="text" class="form-control login__field_field" placeholder="Логин" aria-label="Username" aria-describedby="basic-addon1">
+                                            </div>
+                                            <div class="input-group login__field_password login__field">
+                                                <div class="input-group-append login__field_text">
+                                                    <span class="input-group-text" id="login-password">Ваш пароль</span>
+                                                </div>
+                                                <input type="password" class="form-control login__field_field" placeholder="Пароль" aria-label="Password" aria-describedby="basic-addon2">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer d-flex">
+                                        <button type="button" class="btn btn-success" data-dismiss="modal">
+                                            Подтвердить
+                                        </button>
+                                        <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal" data-toggle="modal" data-target="#password">
+                                            Зарегестрироваться &rarr;
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="password">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Зарегестрируйтесь</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="modal_form" method="POST">
+                                            <div class="input-group login__field">
+                                                <div class="input-group-prepend login__field_text">
+                                                    <span class="input-group-text" id="login-name">Введите логин</span>
+                                                </div>
+                                                <input type="text" class="form-control login__field_field" placeholder="Логин" aria-label="Username" aria-describedby="basic-addon1">
+                                            </div>
+                                            <div class="input-group login__field_password login__field">
+                                                <div class="input-group-append login__field_text">
+                                                    <span class="input-group-text" id="login-password">Введите пароль</span>
+                                                </div>
+                                                <input type="password" class="form-control login__field_field" placeholder="Пароль" aria-label="Password" aria-describedby="basic-addon2">
+                                            </div>
+                                            <div class="input-group login__field_password login__field">
+                                                <div class="input-group-append login__field_text">
+                                                    <span class="input-group-text" id="login-password">Подтвердите пароль</span>
+                                                </div>
+                                                <input type="password" class="form-control login__field_field" placeholder="Подтвердите пароль" aria-label="Password" aria-describedby="basic-addon2">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer d-flex">
+                                        <button type="button" class="btn btn-success" data-dismiss="modal">
+                                            Зарегестрироваться
+                                        </button>
+                                        <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal" data-toggle="modal" data-target="#login">
+                                            Залогиниться &rarr;
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </article>
-            {#</div>#}
-        {#</div>#}
-
-        <script defer src="web/js/vendor/jquery.js"></script>
-        <script defer src="web/js/vendor/foundation.js"></script>
-        <script defer src="web/js/vendor/what-input.js"></script>
+                <article class="col-sm-12 main d-flex justify-content-center">
+                    <div class="main__content d-none">
+                        {% block canvas %}{% endblock %}
+                    </div>
+                </article>
+                <article class="col-sm-12 main d-flex justify-content-center align-items-center ">
+                    <div class="top-block d-none">
+                        <figure class="figure d-flex justify-content-center">
+                            <img class="figure__img" src="web/img/description_card_1.png" alt="Описание 1" />
+                            <figcaption class="figure__paragraph d-flex justify-content-center align-items-center">
+                                Наслаждайся яркой, красочной и динамичной игрой
+                            </figcaption>
+                        </figure>
+                        <figure class="figure d-flex justify-content-center">
+                            <figcaption class="figure__paragraph d-flex justify-content-center align-items-center">
+                                Уничтожай врагов. Докажи своё превосходство!
+                            </figcaption>
+                            <img class="figure__img" src="web/img/description_card_1.png" alt="Описание 2" />
+                        </figure>
+                        <figure class="figure d-flex justify-content-center">
+                            <img class="figure__img" src="web/img/description_card_1.png" alt="Описание 3" />
+                            <figcaption class="figure__paragraph d-flex justify-content-center align-items-center">
+                                Открывай новые скиный. Создай свой уникальный вид
+                            </figcaption>
+                        </figure>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <footer class="footer d-flex justify-content-center align-items-center">
+            &#169 Все права защищены. SilverCorp
+        </footer>
+        <script defer src="web/js/vendor/jquery-3.3.1.min.js"></script>
+        <script defer src="web/js/vendor/popper.js"></script>
+        <script defer src="web/js/vendor/bootstrap.bundle.min.js"></script>
         <script defer src="web/js/app.js"></script>
-        <script defer type="module" src="web/js/canvas.js"></script>
+        <script defer type="module" src="web/js/viewport.js"></script>
     </body>
 </html>
