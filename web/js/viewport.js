@@ -1,13 +1,13 @@
 import {BOMBERMAN_START_POSITION_X, BOMBERMAN_START_POSITION_Y, createBomber} from './canvas_part/bomber.js';
 import {ARENA_CELL, ArenaPlaces, createArena} from './canvas_part/arena.js';
 import {createBarriers} from './canvas_part/block.js';
-import {ticTak} from './canvas_part/bomb.js';
+import {trackLifeTime} from './canvas_part/bomb.js';
 import {Vec2, ClickHandler, handlerForBomber, handlerForBomb} from './canvas_part/clickHandler.js';
 import {redraw} from './canvas_part/render.js';
 import {collisionsProcessing} from './canvas_part/collision.js';
 
 function update(dt, bombers, arena, keyMap, place) {
-    ticTak(place, dt);
+    trackLifeTime(place, bombers, dt);
     for (const bomber of bombers) {
         const directionForce = handlerForBomber(bomber, keyMap);
         const moveDistance = bomber.speed.multiplyScalar(dt).multiply(directionForce);
