@@ -1,21 +1,20 @@
-import {Vec2, BOMBERMAN_START_POSITION_X, BOMBERMAN_START_POSITION_Y, processKeyMapForBomber, createBomber} from "./canvas_part/bomber.canvas.js";
-import {ARENA_CELL, ArenaPlaces, createArena} from "./canvas_part/arena.canvas.js";
-import {createBarriers} from "./canvas_part/barrier.canvas.js";
-import {processKeyMapForBomb, ticTak} from "./canvas_part/bomb.canvas.js";
-import {KeymapCanvas} from "./canvas_part/keymap.canvas.js";
-import {redraw} from "./canvas_part/draw.canvas.js";
-import {collisionsProcessing} from "./canvas_part/collisions.canvas.js";
+import {BOMBERMAN_START_POSITION_X, BOMBERMAN_START_POSITION_Y, createBomber} from './canvas_part/bomber.js';
+import {ARENA_CELL, ArenaPlaces, createArena} from './canvas_part/arena.js';
+import {createBarriers} from './canvas_part/block.js';
+import {ticTak} from './canvas_part/bomb.js';
+import {Vec2, ClickHandler, handlerForBomber, handlerForBomb} from './canvas_part/clickHandler.js';
+import {redraw} from './canvas_part/render.js';
+import {collisionsProcessing} from './canvas_part/collision.js';
 
-function update(dt, bombers, arena, keyMap, place)
-{
+function update(dt, bombers, arena, keyMap, place) {
+    ticTak(place, dt);
     for (const bomber of bombers) {
-        const directionForce = processKeyMapForBomber(bomber, keyMap);
+        const directionForce = handlerForBomber(bomber, keyMap);
         const moveDistance = bomber.speed.multiplyScalar(dt).multiply(directionForce);
 
         bomber.position = bomber.position.add(collisionsProcessing(bomber, arena, moveDistance, place));
-        processKeyMapForBomb(keyMap, bomber, place);
+        handlerForBomb(keyMap, bomber, place);
     }
-    ticTak(place, dt);
 }
 
 function main() {
@@ -37,21 +36,22 @@ function main() {
 
     const arena = createArena();
     const place = new ArenaPlaces();
+    place.clearMap();
 
-    for(let y = ARENA_CELL; y < arena.arenaHeight; y += ARENA_CELL * 2) {
-        for(let x = ARENA_CELL; x < arena.arenaWidth; x += ARENA_CELL * 2) {
+    for (let y = ARENA_CELL; y < arena.arenaHeight; y += ARENA_CELL * 2) {
+        for (let x = ARENA_CELL; x < arena.arenaWidth; x += ARENA_CELL * 2) {
             const barrierPosition = new Vec2(x, y);
             place.takePlace(createBarriers(barrierPosition), 'barrier');
         }
     }
 
-    const keyMap = new KeymapCanvas();
+    const keyMap = new ClickHandler();
 
-    document.addEventListener("keydown", (event) => {
+    document.addEventListener('keydown', (event) => {
         keyMap.onKeyDown(event.keyCode);
     });
 
-    document.addEventListener("keyup", (event) => {
+    document.addEventListener('keyup', (event) => {
         keyMap.onKeyUp(event.keyCode);
     });
 

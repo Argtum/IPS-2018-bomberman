@@ -1,4 +1,4 @@
-import {Vec2} from "./bomber.canvas.js";
+import {Vec2} from './clickHandler.js';
 
 const ARENA_START_POINT_X = 0;
 const ARENA_START_POINT_Y = 0;
@@ -7,7 +7,7 @@ const NUMBER_OF_CELL_X = 15;
 const NUMBER_OF_CELL_Y = 11;
 const ARENA_BACKGROUND_COLOR = '#CCC';
 
-function ArenaCanvas(arenaStartX, arenaStartY, arenaWidth, arenaHeight, backgroundColor) {
+function Arena(arenaStartX, arenaStartY, arenaWidth, arenaHeight, backgroundColor) {
     this.startX = arenaStartX;
     this.startY = arenaStartY;
     this.arenaWidth = arenaWidth;
@@ -22,7 +22,7 @@ function createArena() {
     const arenaHeight = ARENA_CELL * NUMBER_OF_CELL_Y;
     const backgroundColor = ARENA_BACKGROUND_COLOR;
 
-    return new ArenaCanvas (
+    return new Arena(
         arenaStartX,
         arenaStartY,
         arenaWidth,
@@ -41,29 +41,31 @@ function getCurrentPosition(bomber) {
 function ArenaPlaces() {
     this._cellMap = [];
 
-    for (let x = 0; x < NUMBER_OF_CELL_X; ++x) {
-        this._cellMap.push([]);
-        for (let y = 0; y < NUMBER_OF_CELL_Y; ++y) {
-            this._cellMap[x].push({
-                obj: {},
-                type: "empty",
-            });
+    this.clearMap = function() {
+        for (let x = 0; x < NUMBER_OF_CELL_X; ++x) {
+            this._cellMap.push([]);
+            for (let y = 0; y < NUMBER_OF_CELL_Y; ++y) {
+                this._cellMap[x].push({
+                    obj: {},
+                    type: 'empty',
+                });
+            }
         }
-    }
+    };
 
     this.takePlace = function(obj, type) {
         const x = Math.floor(obj.position.x / ARENA_CELL);
         const y = Math.floor(obj.position.y / ARENA_CELL);
         this._cellMap[x][y] = {
-            'obj':  obj,
+            'obj': obj,
             'type': type,
-        }
+        };
     };
 
-    this.freePlace = function(x, y) {
+    this.free = function(x, y) {
         this._cellMap[x][y] = {
             obj: {},
-            type: "empty",
+            type: 'empty',
         };
     };
 
@@ -73,6 +75,12 @@ function ArenaPlaces() {
 
     this.whatType = function(x, y) {
         return this._cellMap[x][y].type;
+    };
+
+    this.setType = function(x, y, type) {
+        this._cellMap[x][y] = {
+            'type': type,
+        };
     };
 
     Object.freeze(this);

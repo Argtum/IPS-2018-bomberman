@@ -9,13 +9,13 @@
         <link rel="stylesheet" href="web/styles/app.css">
     </head>
     <body>
-        <header class="clearfix d-flex justify-content-center">
+        <header class="clearfix d-none justify-content-center">
             <h1 class="d-none">BOMBERMAN</h1>
             <img src="web/img/logo.png" class="main__logo" alt="game_logo">
         </header>
         <div class="container">
             <div class="row">
-                <article class="col-sm-12 main d-flex justify-content-center">
+                <article class="col-sm-12 main d-none justify-content-center">
                     <div class="main__content">
                         <img src="web/img/bomberman_face.jpg" class="main__content_start-gemeplay d-block" alt="game_window">
                         <button type="button" class="main__content_button btn btn-info btn-lg float-left">Описание</button>
@@ -99,7 +99,7 @@
                     </div>
                 </article>
                 <article class="col-sm-12 main d-flex justify-content-center">
-                    <div class="main__content d-none">
+                    <div class="main__content">
                         {% block canvas %}{% endblock %}
                     </div>
                 </article>
@@ -127,7 +127,7 @@
                 </article>
             </div>
         </div>
-        <footer class="footer d-flex justify-content-center align-items-center">
+        <footer class="footer d-none justify-content-center align-items-center">
             &#169 Все права защищены. SilverCorp
         </footer>
         <script defer src="web/js/vendor/jquery-3.3.1.min.js"></script>
