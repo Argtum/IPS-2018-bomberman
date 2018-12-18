@@ -31,9 +31,9 @@ function createArena() {
     );
 }
 
-function getCurrentPosition(bomber) {
-    const xPosition = Math.ceil(bomber.position.x / ARENA_CELL);
-    const yPosition = Math.ceil(bomber.position.y / ARENA_CELL);
+function getCurrentPosition(obj) {
+    const xPosition = Math.ceil(obj.position.x / ARENA_CELL);
+    const yPosition = Math.ceil(obj.position.y / ARENA_CELL);
 
     return new Vec2(xPosition * ARENA_CELL - ARENA_CELL / 2, yPosition * ARENA_CELL - ARENA_CELL / 2);
 }
@@ -75,12 +75,6 @@ function ArenaPlaces() {
 
     this.whatType = function(x, y) {
         return this._cellMap[x][y].type;
-    };
-
-    this.setType = function(x, y, type) {
-        this._cellMap[x][y] = {
-            'type': type,
-        };
     };
 
     Object.freeze(this);

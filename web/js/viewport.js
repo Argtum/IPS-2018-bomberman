@@ -1,6 +1,6 @@
-import {BOMBERMAN_START_POSITION_X, BOMBERMAN_START_POSITION_Y, createBomber} from './canvas_part/bomber.js';
+import {getBombers, deleteBomber, clearStartPosition} from './canvas_part/bomber.js';
 import {ARENA_CELL, ArenaPlaces, createArena} from './canvas_part/arena.js';
-import {createBarriers} from './canvas_part/block.js';
+import {createBarriers, BLOCK_COLOR, BARRIER_COLOR} from './canvas_part/block.js';
 import {trackLifeTime} from './canvas_part/bomb.js';
 import {Vec2, ClickHandler, handlerForBomber, handlerForBomb} from './canvas_part/clickHandler.js';
 import {redraw} from './canvas_part/render.js';
@@ -12,8 +12,13 @@ function update(dt, bombers, arena, keyMap, place) {
         const directionForce = handlerForBomber(bomber, keyMap);
         const moveDistance = bomber.speed.multiplyScalar(dt).multiply(directionForce);
 
-        bomber.position = bomber.position.add(collisionsProcessing(bomber, arena, moveDistance, place));
-        handlerForBomb(keyMap, bomber, place);
+        const collisionsResult = collisionsProcessing(bomber, arena, moveDistance, place);
+        if (collisionsResult['died']) {
+            deleteBomber(bombers, bomber);
+        } else {
+            bomber.position = bomber.position.add(collisionsResult['distance']);
+            handlerForBomb(keyMap, bomber, place);
+        }
     }
 }
 
@@ -23,17 +28,7 @@ function main() {
     canvas.height = canvas.offsetHeight;
     const ctx = canvas.getContext('2d');
 
-    const bomberStartPositionX = BOMBERMAN_START_POSITION_X;
-    const bomberStartPositionY = BOMBERMAN_START_POSITION_Y;
-
-    const position = new Vec2(bomberStartPositionX, bomberStartPositionY);
-    const numberOfBomber = 1;
-
-    const bombers = [];
-    for (let i = 1; i <= numberOfBomber; i++) {
-        bombers.push(createBomber(position, i));
-    }
-
+    const bombers = getBombers();
     const arena = createArena();
     const place = new ArenaPlaces();
     place.clearMap();
@@ -41,10 +36,22 @@ function main() {
     for (let y = ARENA_CELL; y < arena.arenaHeight; y += ARENA_CELL * 2) {
         for (let x = ARENA_CELL; x < arena.arenaWidth; x += ARENA_CELL * 2) {
             const barrierPosition = new Vec2(x, y);
-            place.takePlace(createBarriers(barrierPosition), 'barrier');
+            place.takePlace(createBarriers(barrierPosition, BARRIER_COLOR), 'barrier');
         }
     }
 
+    for (let y = 0; y < arena.arenaHeight; y += ARENA_CELL) {
+        for (let x = 0; x < arena.arenaWidth; x += ARENA_CELL) {
+            const xPosition = Math.floor(x / ARENA_CELL);
+            const yPosition = Math.floor(y / ARENA_CELL);
+            if (place.whatType(xPosition, yPosition) == 'empty') {
+                const barrierPosition = new Vec2(x, y);
+                place.takePlace(createBarriers(barrierPosition, BLOCK_COLOR), 'block');
+            }
+        }
+    }
+
+    clearStartPosition(bombers, place);
     const keyMap = new ClickHandler();
 
     document.addEventListener('keydown', (event) => {

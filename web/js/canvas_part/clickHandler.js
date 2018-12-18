@@ -1,13 +1,19 @@
-import {getCurrentPosition} from './arena.js';
+import {getCurrentPosition, ARENA_CELL} from './arena.js';
 import {createBomb, BOMB_LIFETIME, BOMB_COLOR} from './bomb.js';
-import {ARENA_CELL} from './arena.js';
 
 const keyCode = {
+    //PLAYER 1
     SPACE: 32,
     LEFT_ARROW: 37,
     UP_ARROW: 38,
     RIGHT_ARROW: 39,
     DOWN_ARROW: 40,
+    //PLAYER 2
+    // SPACE: 32,
+    // LEFT_ARROW: 37,
+    // UP_ARROW: 38,
+    // RIGHT_ARROW: 39,
+    // DOWN_ARROW: 40,
 };
 Object.freeze(keyCode);
 

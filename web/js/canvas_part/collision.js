@@ -1,6 +1,7 @@
 import {BOMBERMAN_RADIUS} from './bomber.js';
 import {NUMBER_OF_CELL_X, NUMBER_OF_CELL_Y} from './arena.js';
 import {Vec2} from './clickHandler.js';
+import {BOMB_RADIUS} from './bomb.js';
 
 const X_COLLISION = new Vec2(0, 1);
 const Y_COLLISION = new Vec2(1, 0);
@@ -21,7 +22,7 @@ function barrierCollisions(bomber, moveDistance, nextPosition, place) {
 
     for (let j = 0; j < NUMBER_OF_CELL_Y; j++) {
         for (let i = 0; i < NUMBER_OF_CELL_X; i++) {
-            if (!isCollision && place.whatType(i, j) == 'barrier' &&
+            if (!isCollision && (place.whatType(i, j) == 'barrier' || place.whatType(i, j) == 'block') &&
                 nextPosition.x >= (place.getObj(i, j).position.x - BOMBERMAN_RADIUS) &&
                 nextPosition.x <= (place.getObj(i, j).position.x + place.getObj(i, j).width + BOMBERMAN_RADIUS) &&
                 nextPosition.y >= (place.getObj(i, j).position.y - BOMBERMAN_RADIUS) &&
@@ -40,13 +41,33 @@ function barrierCollisions(bomber, moveDistance, nextPosition, place) {
     return moveDistance;
 }
 
+function fireCollisions(bomber, moveDistance, nextPosition, place) {
+    let isCollision = false;
+    const safeDistance = BOMBERMAN_RADIUS + BOMB_RADIUS;
+    for (let j = 0; j < NUMBER_OF_CELL_Y; j++) {
+        for (let i = 0; i < NUMBER_OF_CELL_X; i++) {
+            if (place.whatType(i, j) == 'fire') {
+                const flashFire = place.getObj(i, j);
+                if (Math.abs(bomber.position.x - flashFire.position.x) < safeDistance && Math.abs(bomber.position.y - flashFire.position.y) < safeDistance) {
+                    isCollision = true;
+                }
+            }
+        }
+    }
+    return isCollision;
+}
+
 function collisionsProcessing(bomber, arena, moveDistance, place) {
     const nextPosition = bomber.position.add(moveDistance);
 
     moveDistance = arenaCollisions(arena, moveDistance, nextPosition);
     moveDistance = barrierCollisions(bomber, moveDistance, nextPosition, place);
+    const isBomberDed = fireCollisions(bomber, moveDistance, nextPosition, place);
 
-    return moveDistance;
+    return {
+        'distance': moveDistance,
+        'died': isBomberDed,
+    };
 }
 
 export {

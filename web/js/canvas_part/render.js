@@ -29,7 +29,7 @@ function redraw(ctx, arena, bombers, place) {
     for (let j = 0; j < NUMBER_OF_CELL_Y; j++) {
         for (let i = 0; i < NUMBER_OF_CELL_X; i++) {
             const currentPlaceType = place.whatType(i, j);
-            if (currentPlaceType == 'barrier') {
+            if (currentPlaceType == 'barrier' || currentPlaceType == 'block') {
                 drawBarrier(ctx, place.getObj(i, j));
             } else if (currentPlaceType == 'bomb' || currentPlaceType == 'fire') {
                 drawBomb(ctx, place.getObj(i, j));
