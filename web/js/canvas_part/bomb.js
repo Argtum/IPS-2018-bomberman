@@ -65,7 +65,7 @@ function explosion(position, place, mainBomb, fireDirection) {
 
 function deleteBomb(i, j, place, bombers) {
     bombers.forEach(function(bomber) {
-        if (place.getObj(i, j).whoseBomb == bomber.number) {
+        if (place.getObj(i, j).whoseBomb == bomber.id) {
             bomber.numberOfBombs++;
         }
     });
