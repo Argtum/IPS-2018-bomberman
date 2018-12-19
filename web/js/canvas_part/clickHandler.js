@@ -84,7 +84,7 @@ function handlerForBomb(keyMap, bomber, place) {
         const yPosition = Math.floor(bombPosition.y / ARENA_CELL);
 
         if (place.whatType(xPosition, yPosition) == 'empty' && bomber.numberOfBombs > 0) {
-            place.takePlace(createBomb(bombPosition, BOMB_LIFETIME, bomber.number, BOMB_COLOR), 'bomb');
+            place.takePlace(createBomb(bombPosition, BOMB_LIFETIME, bomber.id, BOMB_COLOR), 'bomb');
             bomber.numberOfBombs--;
         }
     }

@@ -22,7 +22,7 @@ function Bomb(bombPosition, radius, radiusStart, radiusEnd, bombColor, fireRadiu
     this.whoseBomb = whoseBomb;
 }
 
-function createBomb(position, lt, bomber, color) {
+function createBomb(position, lt, bomberId, color) {
     const bombPosition = position;
     const bombRadius = BOMB_RADIUS;
     const bombStartAngle = BOMB_START_ANGLE;
@@ -31,7 +31,7 @@ function createBomb(position, lt, bomber, color) {
     const fireRadius = FIRE_SIZE;
     const lifeTime = lt;
     const explosionTime = EXPLOSION_TIME;
-    const whoseBomb = bomber;
+    const whoseBomb = bomberId;
 
     return new Bomb(
         bombPosition,
@@ -63,13 +63,12 @@ function explosion(position, place, mainBomb, fireDirection) {
     return fireDirection;
 }
 
-function deleteBomb(i, j, place, bombers) {
+function returnBomb(i, j, place, bombers) {
     bombers.forEach(function(bomber) {
         if (place.getObj(i, j).whoseBomb == bomber.id) {
             bomber.numberOfBombs++;
         }
     });
-    place.free(i, j);
 }
 
 function trackLifeTime(place, bombers, dt) {
@@ -80,10 +79,11 @@ function trackLifeTime(place, bombers, dt) {
             }
 
             if (place.whatType(i, j) == 'fire' && place.getObj(i, j).lifeTime <= 0) {
-                deleteBomb(i, j, place, bombers);
+                place.free(i, j);
             }
 
             if (place.whatType(i, j) == 'bomb' && place.getObj(i, j).lifeTime <= place.getObj(i, j).explosionTime) {
+                returnBomb(i, j, place, bombers);
                 const mainBomb = place.getObj(i, j);
                 const bombPlace = new Vec2(i, j);
                 const fireDirection = {
