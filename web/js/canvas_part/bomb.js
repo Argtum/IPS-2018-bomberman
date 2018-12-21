@@ -6,7 +6,7 @@ const BOMB_START_ANGLE = 0;
 const BOMB_END_ANGLE = Math.PI * 2;
 const BOMB_COLOR = '#222';
 const BOMB_LIFETIME = 3; //в милисекундах
-const FIRE_SIZE = 10;
+const FIRE_SIZE = 3;
 const FIRE_COLOR = '#FF0000';
 const EXPLOSION_TIME = 0.5; //в милисекундах
 
@@ -49,7 +49,8 @@ function createBomb(position, lt, bomberId, color) {
 function explosion(position, place, mainBomb, fireDirection) {
     const currentObjType = place.whatType(position.x, position.y);
     if (currentObjType == 'empty') {
-        const currentPosition = new Vec2(position.x * ARENA_CELL + ARENA_CELL/2, position.y * ARENA_CELL + ARENA_CELL/2);
+        const currentPosition = new Vec2(position.x * ARENA_CELL + ARENA_CELL/2,
+            position.y * ARENA_CELL + ARENA_CELL/2);
         const fireLifeTime = mainBomb.lifeTime;
         place.takePlace(createBomb(currentPosition, fireLifeTime, 0, FIRE_COLOR), 'fire');
     } else if (currentObjType == 'bomb') {
@@ -94,22 +95,26 @@ function trackLifeTime(place, bombers, dt) {
                 };
                 for (let radius = 1; radius < place.getObj(i, j).fireRadius; radius++) {
                     if (i + radius < NUMBER_OF_CELL_X && fireDirection['rightAllowed']) {
-                        fireDirection['rightAllowed'] = explosion(bombPlace.add(Direction.RIGHT.multiplyScalar(radius)), place, mainBomb, fireDirection['rightAllowed']);
+                        fireDirection['rightAllowed'] = explosion(bombPlace.add(Direction.RIGHT.multiplyScalar(radius)),
+                            place, mainBomb, fireDirection['rightAllowed']);
                     } else {
                         fireDirection['rightAllowed'] = 0;
                     }
                     if (i - radius >= 0 && fireDirection['leftAllowed']) {
-                        fireDirection['leftAllowed'] = explosion(bombPlace.add(Direction.LEFT.multiplyScalar(radius)), place, mainBomb, fireDirection['leftAllowed']);
+                        fireDirection['leftAllowed'] = explosion(bombPlace.add(Direction.LEFT.multiplyScalar(radius)),
+                            place, mainBomb, fireDirection['leftAllowed']);
                     } else {
                         fireDirection['leftAllowed'] = 0;
                     }
                     if (j + radius < NUMBER_OF_CELL_Y && fireDirection['downAllowed']) {
-                        fireDirection['downAllowed'] = explosion(bombPlace.add(Direction.DOWN.multiplyScalar(radius)), place, mainBomb, fireDirection['downAllowed']);
+                        fireDirection['downAllowed'] = explosion(bombPlace.add(Direction.DOWN.multiplyScalar(radius)),
+                            place, mainBomb, fireDirection['downAllowed']);
                     } else {
                         fireDirection['downAllowed'] = 0;
                     }
                     if (j - radius >= 0 && fireDirection['upAllowed']) {
-                        fireDirection['upAllowed'] = explosion(bombPlace.add(Direction.UP.multiplyScalar(radius)), place, mainBomb, fireDirection['upAllowed']);
+                        fireDirection['upAllowed'] = explosion(bombPlace.add(Direction.UP.multiplyScalar(radius)),
+                            place, mainBomb, fireDirection['upAllowed']);
                     } else {
                         fireDirection['upAllowed'] = 0;
                     }

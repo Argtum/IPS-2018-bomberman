@@ -1,38 +1,18 @@
 import {getCurrentPosition, ARENA_CELL} from './arena.js';
 import {createBomb, BOMB_LIFETIME, BOMB_COLOR} from './bomb.js';
 
-const keyCode = {
-    //PLAYER 1
-    SPACE: 32,
-    LEFT_ARROW: 37,
-    UP_ARROW: 38,
-    RIGHT_ARROW: 39,
-    DOWN_ARROW: 40,
-    //PLAYER 2
-    // SPACE: 32,
-    // LEFT_ARROW: 37,
-    // UP_ARROW: 38,
-    // RIGHT_ARROW: 39,
-    // DOWN_ARROW: 40,
-};
-Object.freeze(keyCode);
+function clickHandler(bombers) {
+    for (const bomber of bombers) {
+        document.addEventListener('keydown', (event) => {
+            bomber.onKeyDown(event.keyCode);
+            // event.stopPropagation();
+            event.preventDefault();
+        });
 
-function ClickHandler() {
-    this._map = {};
-
-    this.onKeyDown = function(keyCode) {
-        this._map[keyCode] = true;
-    };
-
-    this.onKeyUp = function(keyCode) {
-        delete this._map[keyCode];
-    };
-
-    this.isPressed = function(keyCode) {
-        return Boolean(this._map[keyCode]);
-    };
-
-    Object.freeze(this);
+        document.addEventListener('keyup', (event) => {
+            bomber.onKeyUp(event.keyCode);
+        });
+    }
 }
 
 function Vec2(x, y) {
@@ -60,25 +40,25 @@ const Direction = {
 };
 Object.freeze(Direction);
 
-function handlerForBomber(bomber, keyMap) {
+function handlerForBomber(bomber) {
     let directionForce = Vec2.ZERO;
-    if (keyMap.isPressed(keyCode.LEFT_ARROW)) {
+    if (bomber.isPressed(bomber.keyCode.LEFT)) {
         directionForce = directionForce.add(Direction.LEFT);
     }
-    if (keyMap.isPressed(keyCode.RIGHT_ARROW)) {
+    if (bomber.isPressed(bomber.keyCode.RIGHT)) {
         directionForce = directionForce.add(Direction.RIGHT);
     }
-    if (keyMap.isPressed(keyCode.UP_ARROW)) {
+    if (bomber.isPressed(bomber.keyCode.UP)) {
         directionForce = directionForce.add(Direction.UP);
     }
-    if (keyMap.isPressed(keyCode.DOWN_ARROW)) {
+    if (bomber.isPressed(bomber.keyCode.DOWN)) {
         directionForce = directionForce.add(Direction.DOWN);
     }
     return directionForce;
 }
 
-function handlerForBomb(keyMap, bomber, place) {
-    if (keyMap.isPressed(keyCode.SPACE)) {
+function handlerForBomb(bomber, place) {
+    if (bomber.isPressed(bomber.keyCode.DROP)) {
         const bombPosition = getCurrentPosition(bomber);
         const xPosition = Math.floor(bombPosition.x / ARENA_CELL);
         const yPosition = Math.floor(bombPosition.y / ARENA_CELL);
@@ -92,9 +72,8 @@ function handlerForBomb(keyMap, bomber, place) {
 
 export {
     Vec2,
-    keyCode,
     Direction,
     handlerForBomber,
     handlerForBomb,
-    ClickHandler,
+    clickHandler,
 };
