@@ -10,8 +10,14 @@
     height: 550px; }
   .main__content_button {
     margin: 20px 0; }
-  .main__content .login__field_password {
-    margin-top: 10px; }
+  .main__content .login__field {
+    height: 50px; }
+    .main__content .login__field_password {
+      margin-top: 10px; }
+    .main__content .login__field_field {
+      height: 50px; }
+    .main__content .login__field_text {
+      height: 50px; }
   .main .figure {
     margin: 30px 10px; }
     .main .figure__img {
