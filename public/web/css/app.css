@@ -1,10 +1,19 @@
+.logo {
+  max-width: 1000px;
+  width: 100%;
+  height: 100%; }
+
+.viewport {
+  width: 750px;
+  height: 550px; }
+
+.empty {
+  width: 480px; }
+
 .main {
   width: 100%;
   height: 100%;
   margin: 20px; }
-  .main__logo {
-    width: 1000px;
-    height: 100%; }
   .main__content_canvas {
     width: 750px;
     height: 550px; }
