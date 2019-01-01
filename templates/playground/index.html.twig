@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bomberman{% endblock %}
+
+{% block body %}
+    <article class="col-sm-12 main d-flex justify-content-center">
+        <div class="main__content">
+            <canvas id="canvas" class="main__content_canvas "></canvas>
+        </div>
+    </article>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="module" src="{{ asset('web/js/viewport.js') }}"></script>
+{% endblock %}

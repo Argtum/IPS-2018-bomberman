@@ -2,19 +2,25 @@
 
 {% block title %}Bomberman{% endblock %}
 
+ {% block header %}
+     {%  include 'includes/header.html.twig' %}
+ {% endblock %}
+
 {% block body %}
-    <div class="container">
-        <div class="row justify-content-sm-center">
-            <article class="col-sm-12">
-                <img src="web/img/bomberman_face.jpg" class="viewport rounded mx-auto d-block" alt="game_window">
-                <div class="d-flex justify-content-center">
-                    <a href="description_page" type="button" class="main__content_button btn btn-info btn-lg">Описание</a>
-                    <div class="empty"></div>
-                    <button type="button" class="main__content_button btn btn-success btn-lg float-right" data-toggle="modal" data-target="#login">
-                        Начать игру
-                    </button>
-                </div>
-            </article>
+    <article class="col-sm-12">
+        <img src="{{ asset('web/img/bomberman_face.jpg') }}" class="viewport rounded mx-auto d-block" alt="game_window">
+        <div class="d-flex justify-content-center">
+            <a href="{{ path('description_page') }}" type="button" class="main__content_button btn btn-info btn-lg">
+                Описание
+            </a>
+            <div class="empty"></div>
+            <a href="{{ path('playground') }}" type="button" class="main__content_button btn btn-success btn-lg float-right">
+                Начать игру
+            </a>
         </div>
-    </div>
+    </article>
 {% endblock %}
+
+ {% block footer %}
+     {% include 'includes/footer.html.twig' %}
+ {% endblock %}
