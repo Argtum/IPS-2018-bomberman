@@ -14,83 +14,83 @@
                 Описание
             </a>
             <div class="empty"></div>
-            <button type="button" class="main__content_button btn btn-success btn-lg float-right" data-toggle="modal" data-target="#login">
+            <a href="{{ path('registration') }}" type="button" class="main__content_button btn btn-success btn-lg float-right">
                 Начать игру
-            </button>
-            <div class="modal fade" id="login">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Авторизуйтесь</h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <form class="modal_form" method="POST">
-                                <div class="input-group login__field">
-                                    <div class="input-group-prepend login__field_text">
-                                        <span class="input-group-text" id="login-name">Ваш логин</span>
-                                    </div>
-                                    <input type="text" class="form-control login__field_field" placeholder="Логин" aria-label="Username" aria-describedby="basic-addon1">
-                                </div>
-                                <div class="input-group login__field_password login__field">
-                                    <div class="input-group-append login__field_text">
-                                        <span class="input-group-text" id="login-password">Ваш пароль</span>
-                                    </div>
-                                    <input type="password" class="form-control login__field_field" placeholder="Пароль" aria-label="Password" aria-describedby="basic-addon2">
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer d-flex">
-                            <button type="button" class="btn btn-success" data-dismiss="modal">
-                                Подтвердить
-                            </button>
-                            <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal" data-toggle="modal" data-target="#password">
-                                Зарегестрироваться &rarr;
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade" id="password">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Зарегестрируйтесь</h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <form class="modal_form" method="POST">
-                                <div class="input-group login__field">
-                                    <div class="input-group-prepend login__field_text">
-                                        <span class="input-group-text" id="login-name">Введите логин</span>
-                                    </div>
-                                    <input type="text" class="form-control login__field_field" placeholder="Логин" aria-label="Username" aria-describedby="basic-addon1">
-                                </div>
-                                <div class="input-group login__field_password login__field">
-                                    <div class="input-group-append login__field_text">
-                                        <span class="input-group-text" id="login-password">Введите пароль</span>
-                                    </div>
-                                    <input type="password" class="form-control login__field_field" placeholder="Пароль" aria-label="Password" aria-describedby="basic-addon2">
-                                </div>
-                                <div class="input-group login__field_password login__field">
-                                    <div class="input-group-append login__field_text">
-                                        <span class="input-group-text" id="login-password">Подтвердите пароль</span>
-                                    </div>
-                                    <input type="password" class="form-control login__field_field" placeholder="Подтвердите пароль" aria-label="Password" aria-describedby="basic-addon2">
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer d-flex">
-                            <a href="{{ path('registration') }}" type="button" class="btn btn-success" data-dismiss="modal">
-                                Зарегестрироваться
-                            </a>
-                            <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal" data-toggle="modal" data-target="#login">
-                                Залогиниться &rarr;
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </a>
+            {#<div class="modal fade" id="login">#}
+                {#<div class="modal-dialog modal-dialog-centered">#}
+                    {#<div class="modal-content">#}
+                        {#<div class="modal-header">#}
+                            {#<h4 class="modal-title">Авторизуйтесь</h4>#}
+                            {#<button type="button" class="close" data-dismiss="modal">&times;</button>#}
+                        {#</div>#}
+                        {#<div class="modal-body">#}
+                            {#<form class="modal_form" method="POST">#}
+                                {#<div class="input-group login__field">#}
+                                    {#<div class="input-group-prepend login__field_text">#}
+                                        {#<span class="input-group-text" id="login-name">Ваш логин</span>#}
+                                    {#</div>#}
+                                    {#<input type="text" class="form-control login__field_field" placeholder="Логин" aria-label="Username" aria-describedby="basic-addon1">#}
+                                {#</div>#}
+                                {#<div class="input-group login__field_password login__field">#}
+                                    {#<div class="input-group-append login__field_text">#}
+                                        {#<span class="input-group-text" id="login-password">Ваш пароль</span>#}
+                                    {#</div>#}
+                                    {#<input type="password" class="form-control login__field_field" placeholder="Пароль" aria-label="Password" aria-describedby="basic-addon2">#}
+                                {#</div>#}
+                            {#</form>#}
+                        {#</div>#}
+                        {#<div class="modal-footer d-flex">#}
+                            {#<button type="button" class="btn btn-success" data-dismiss="modal">#}
+                                {#Подтвердить#}
+                            {#</button>#}
+                            {#<button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal" data-toggle="modal" data-target="#password">#}
+                                {#Зарегестрироваться &rarr;#}
+                            {#</button>#}
+                        {#</div>#}
+                    {#</div>#}
+                {#</div>#}
+            {#</div>#}
+            {#<div class="modal fade" id="password">#}
+                {#<div class="modal-dialog modal-dialog-centered">#}
+                    {#<div class="modal-content">#}
+                        {#<div class="modal-header">#}
+                            {#<h4 class="modal-title">Зарегестрируйтесь</h4>#}
+                            {#<button type="button" class="close" data-dismiss="modal">&times;</button>#}
+                        {#</div>#}
+                        {#<div class="modal-body">#}
+                            {#<form class="modal_form" method="POST">#}
+                                {#<div class="input-group login__field">#}
+                                    {#<div class="input-group-prepend login__field_text">#}
+                                        {#<span class="input-group-text" id="login-name">Введите логин</span>#}
+                                    {#</div>#}
+                                    {#<input type="text" class="form-control login__field_field" placeholder="Логин" aria-label="Username" aria-describedby="basic-addon1">#}
+                                {#</div>#}
+                                {#<div class="input-group login__field_password login__field">#}
+                                    {#<div class="input-group-append login__field_text">#}
+                                        {#<span class="input-group-text" id="login-password">Введите пароль</span>#}
+                                    {#</div>#}
+                                    {#<input type="password" class="form-control login__field_field" placeholder="Пароль" aria-label="Password" aria-describedby="basic-addon2">#}
+                                {#</div>#}
+                                {#<div class="input-group login__field_password login__field">#}
+                                    {#<div class="input-group-append login__field_text">#}
+                                        {#<span class="input-group-text" id="login-password">Подтвердите пароль</span>#}
+                                    {#</div>#}
+                                    {#<input type="password" class="form-control login__field_field" placeholder="Подтвердите пароль" aria-label="Password" aria-describedby="basic-addon2">#}
+                                {#</div>#}
+                            {#</form>#}
+                        {#</div>#}
+                        {#<div class="modal-footer d-flex">#}
+                            {#<a href="{{ path('registration') }}" type="button" class="btn btn-success" data-dismiss="modal">#}
+                                {#Зарегестрироваться#}
+                            {#</a>#}
+                            {#<button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal" data-toggle="modal" data-target="#login">#}
+                                {#Залогиниться &rarr;#}
+                            {#</button>#}
+                        {#</div>#}
+                    {#</div>#}
+                {#</div>#}
+            {#</div>#}
         </div>
     </article>
 {% endblock %}

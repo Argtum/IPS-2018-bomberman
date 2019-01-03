@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,14 +18,18 @@ class RegistrationController extends AbstractController
      */
     public function newUser(EntityManagerInterface $em)
     {
-        $user = new User();
-        $user->setNickname('Silver')
-             ->setPassword('password')
-             ->setRegistrationDate(\DateTime::createFromFormat('Y-m-d', '2019-01-02'));
+        $form = $this->createForm(RegistrationFormType::class);
 
-        $em->persist($user);
-        $em->flush();
+//        $user = new User();
+//        $user->setNickname('Silver')
+//             ->setPassword('password')
+//             ->setRegistrationDate(\DateTime::createFromFormat('Y-m-d', '2019-01-02'));
+//
+//        $em->persist($user);
+//        $em->flush();
 
-        return new Response("it's OK");
+        return $this->render('registration/index.html.twig', [
+            'registrationForm' => $form->createView()
+        ]);
     }
 }
