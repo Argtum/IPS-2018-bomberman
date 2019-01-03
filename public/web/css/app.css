@@ -17,6 +17,13 @@
   padding: 0;
   line-height: 60px; }
 
+.account-link {
+  color: #666;
+  padding: 10px; }
+  .account-link:hover {
+    text-decoration: none;
+    color: #333; }
+
 .main {
   width: 100%;
   height: 100%;
