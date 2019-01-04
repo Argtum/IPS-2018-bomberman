@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -19,6 +21,9 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(message="Без Nickname'а никак")
+     * @Assert\Regex("/^(([a-zA-Z]{1})([a-zA-Z0-9-_@\|/&%#!*]{4,25}))$/")
+     * @Assert\Length(min="4", max="25")
      */
     private $username;
 
@@ -30,6 +35,9 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Пароль должен иметь минимум 6 символов")
+     * @UserPassword()
+     * @Assert\Length(min="4")
      */
     private $password;
 
