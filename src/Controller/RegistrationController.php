@@ -34,6 +34,8 @@ class RegistrationController extends AbstractController
             $em->persist($user);
             $em->flush();
 
+            $this->addFlash('success', 'Регистрация прошла успешно!');
+
             return $this->redirectToRoute('playground');
         }
 
