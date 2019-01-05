@@ -1,6 +1,9 @@
 {% block header %}
-    <header class="clearfix d-flex justify-content-center">
-        <h1 class="d-none">BOMBERMAN</h1>
-        <img src="{{ asset('web/img/logo.png') }}" class="logo" alt="game_logo">
+    <header class="clearfix">
+        <h1 class="d-none">Bomberman</h1>
+        <div class="profile float-right">
+            <a href="{{ path('app_login') }}" class="profile__link">Sing in</a>
+            <a href="{{ path('app_register') }}" class="profile__link">Sing up</a>
+        </div>
     </header>
 {% endblock %}

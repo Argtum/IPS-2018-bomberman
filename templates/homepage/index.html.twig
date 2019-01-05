@@ -8,19 +8,15 @@
 
 {% block body %}
     <article class="col-sm-12 main">
-        <img src="{{ asset('web/img/bomberman_face.jpg') }}" class="viewport rounded mx-auto d-block" alt="game_window">
+        <img src="{{ asset('img/bomberman_face.jpg') }}" class="viewport rounded mx-auto d-block" alt="game_window">
         <div class="d-flex justify-content-center">
-            <a href="{{ path('description_page') }}" type="button" class="main__content_button btn btn-info btn-lg">
-                Описание
+            <a href="{{ path('description_page') }}" type="button" class="homepage-button btn btn-info btn-lg">
+                Description
             </a>
             <div class="empty"></div>
-            <a href="{{ path('app_login') }}" type="button" class="main__content_button btn btn-success btn-lg float-right">
-                Начать игру
+            <a href="{{ path('settings') }}" type="button" class="homepage-button btn btn-success btn-lg float-right">
+                Start!
             </a>
         </div>
     </article>
 {% endblock %}
-
- {% block footer %}
-     {% include 'includes/footer.html.twig' %}
- {% endblock %}

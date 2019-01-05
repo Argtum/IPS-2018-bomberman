@@ -5,13 +5,15 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PlaygroundController extends AbstractController
+class SettingsPageController extends AbstractController
 {
     /**
-     * @Route("/playground", name="playground")
+     * @Route("/settings", name="settings")
      */
     public function index()
     {
-        return $this->render('playground/index.html.twig', []);
+        return $this->render('settings_page/index.html.twig', [
+
+        ]);
     }
 }

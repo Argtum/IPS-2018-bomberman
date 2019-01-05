@@ -76,8 +76,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return true;
-//        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
@@ -86,7 +85,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 //            return new RedirectResponse($targetPath);
 //        }
 
-        return new RedirectResponse($this->router->generate('playground'));
+        return new RedirectResponse($this->router->generate('settings'));
     }
 
     protected function getLoginUrl()
