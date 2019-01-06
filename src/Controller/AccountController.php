@@ -7,16 +7,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @IsGranted("ROLE_USER")
- */
-class SettingsPageController extends AbstractController
+* @IsGranted("ROLE_USER")
+*/
+class AccountController extends AbstractController
 {
     /**
-     * @Route("/settings", name="settings")
+     * @Route("/account", name="app_account")
      */
     public function index()
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
-        return $this->render('settings_page/index.html.twig', []);
+        return $this->render('account/index.html.twig', []);
     }
 }

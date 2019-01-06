@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Your profile{% endblock %}
+
+ {% block topMenu %}
+     {%  include 'includes/header.html.twig' %}
+ {% endblock %}
+
+{% block body %}
+    <h2>Yor statistics {{ app.user.username }}</h2>
+{% endblock %}

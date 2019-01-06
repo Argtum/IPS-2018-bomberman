@@ -11,10 +11,10 @@
         {% endblock %}
     </head>
     <body>
-        {% block header %}{% endblock %}
+        {% block topMenu %}{% endblock %}
         <div class="container">
             <div class="row justify-content-sm-center">
-                <img src="{{ asset('img/logo.png') }}" class="logo d-block" alt="game_logo">
+                {% block logo %}{% endblock %}
                 {% for message in app.flashes('success') %}
                     <div class="alert alert-success">
                         {{ message }}

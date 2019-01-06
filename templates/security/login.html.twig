@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="{{ asset('css/form.css') }}">
 {% endblock %}
 
-{% block header %}
-    {%  include 'includes/header.html.twig' %}
-{% endblock %}
+ {% block logo %}
+     {%  include 'includes/logo.html.twig' %}
+ {% endblock %}
 
 {% block body %}
     <div class="form-container">
@@ -33,7 +33,7 @@
                 </label>
             </div>
             <button class="btn btn-lg btn-success" type="submit">Sign in</button>
-            <a class="link-to-other-form float-right" href="{{ path('registration') }}">Sing up &rarr;</a>
+            <a class="link-to-other-form float-right" href="{{ path('app_register') }}">Sing up &rarr;</a>
         </form>
     </div>
 {% endblock %}
