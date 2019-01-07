@@ -1,22 +1,23 @@
 {% block header %}
     <header class="clearfix">
         <h1 class="d-none">Bomberman</h1>
-        <div class="profile float-right">
+        <div class="profile-menu float-right">
             {% if is_granted('ROLE_USER') %}
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown">
-                        <span class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="nav-link dropdown-toggle profile-menu__dropdown-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img class="nav-profile-img rounded-circle" src="{{ asset('img/profile_photo_default.png') }}">
+                            {{ app.user.username }}
                         </span>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="{{ path('app_account') }}">Profile</a>
                             <a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
                         </div>
                     </li>
                 </ul>
             {% else %}
-                <a href="{{ path('app_login') }}" class="profile__link">Sing in</a>
-                <a href="{{ path('app_register') }}" class="profile__link">Sing up</a>
+                <a href="{{ path('app_register') }}" class="profile-menu__link">Sing up</a>
+                <a href="{{ path('app_login') }}" class="profile-menu__link">Sing in</a>
             {% endif %}
         </div>
     </header>

@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bomberman{% endblock %}
+
+ {% block topMenu %}
+     {%  include 'includes/top_menu.html.twig' %}
+ {% endblock %}
+
+ {% block logo %}
+     {%  include 'includes/logo.html.twig' %}
+ {% endblock %}
+
+{% block body %}
+    <article class="col-sm-12 main">
+        <canvas id="broadcast" class="viewport"></canvas>
+        <div class="d-flex justify-content-center">
+            <a href="{{ path('info_page') }}" type="button" class="app-button btn btn-info btn-lg">
+                Info
+            </a>
+            <div class="empty"></div>
+            <a href="{{ path('settings') }}" type="button" class="app-button btn btn-success btn-lg float-right">
+                Start
+            </a>
+        </div>
+    </article>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="module" src="{{ asset('js/broadcast.js') }}"></script>
+{% endblock %}

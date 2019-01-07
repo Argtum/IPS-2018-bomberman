@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Settings{% endblock %}
+
+ {% block topMenu %}
+     {%  include 'includes/top_menu.html.twig' %}
+ {% endblock %}
+
+ {% block logo %}
+     {%  include 'includes/logo.html.twig' %}
+ {% endblock %}
+
+{% block body %}
+    <article class="form-container">
+        <form class="form-group" method="post">
+            <h1 class="h3 mb-3 font-weight-normal d-flex justify-content-center col-sm-12 settings__title">Settings</h1>
+
+            <div class="row justify-content-md-center settings__parameter">
+                <label for="inputNumberOfPlayers" class="col-sm-6 col-form-label col-form-label-sm settings__label">
+                    Number of player
+                </label>
+                <button type="button" class="btn btn-primary button_left">&#9668;</button>
+                <div class="col-sm-2">
+                    <input type="text" name="numberOfPlayers" id="inputNumberOfPlayers" class="form-control text-center
+                     settings__parameter_value" value="2" required>
+                </div>
+                <button type="button" class="btn btn-primary button_right">&#9658;</button>
+            </div>
+
+            <div class="row justify-content-md-center settings__parameter settings__parameter_last">
+                <label for="inputNumberOfWins" class="col-sm-6 col-form-label col-form-label-sm settings__label">
+                    Number of wins
+                </label>
+                <button type="button" class="btn btn-primary button_left">&#9668;</button>
+                <div class="col-sm-2">
+                    <input type="text" name="numberOfWins" id="inputNumberOfWins" class="form-control text-center
+                     settings__parameter_value" value="10" required>
+                </div>
+                <button type="button" class="btn btn-primary button_right">&#9658;</button>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <a href="{{ path('homepage') }}" type="button" class="app-button btn btn-danger btn-lg">Back</a>
+                <div class="empty_settings"></div>
+                <button type="submit" class="app-button btn btn-success btn-lg float-right">Player search</button>
+            </div>
+        </form>
+    </article>
+{% endblock %}

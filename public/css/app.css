@@ -1,21 +1,59 @@
+body {
+  background: url(../img/background.jpg), repeat; }
+
+.profile-menu {
+  position: absolute;
+  right: 0; }
+  .profile-menu__link {
+    display: block;
+    float: right;
+    margin: 15px 25px 0 0;
+    font: 600 16px/24px 'Georgia', sans-serif;
+    color: #f9f502;
+    transition: all 0.25s; }
+    .profile-menu__link:hover {
+      text-decoration: none;
+      color: #bfbc0b; }
+  .profile-menu__dropdown-menu {
+    margin-right: 10px;
+    font: 600 14px/18px 'Georgia', sans-serif;
+    cursor: pointer; }
+
+.settings__title {
+  font-size: 30px; }
+.settings__label {
+  font: 600 20px/28px 'Georgia', sans-serif; }
+.settings__parameter {
+  margin-bottom: 15px; }
+  .settings__parameter_value {
+    padding: 0;
+    font: 600 20px/20px 'Georgia', sans-serif; }
+  .settings__parameter_last {
+    margin-bottom: 50px; }
+
 .logo {
-  max-width: 800px;
+  max-width: 750px;
   width: 100%;
   height: 100%; }
 
 .viewport {
   width: 750px;
   height: 550px;
-  margin: 50px 20px 20px; }
+  margin: 45px auto; }
 
 .empty {
-  width: 480px; }
+  width: 600px; }
+  .empty_settings {
+    width: 300px; }
 
 .return-button {
   height: 60px;
   width: 60px;
   padding: 0;
-  line-height: 60px; }
+  line-height: 60px;
+  position: absolute;
+  right: 10px;
+  bottom: 10px; }
 
 .account-link {
   color: #666;
@@ -24,20 +62,21 @@
     text-decoration: none;
     color: #333; }
 
-body {
-  background: url(../img/background.jpg), repeat; }
-
 .footer {
   height: 50px;
   background-color: #647693; }
 
 .main {
   width: 100%;
-  margin: 20px; }
+  margin: 50px; }
 
-.homepage-button {
-  margin: 20px 0;
-  border-radius: 5px; }
+.app-button-container {
+  height: 550px; }
+
+.app-button {
+  font: 600 20px/40px 'Georgia', sans-serif; }
+  .app-button_info {
+    margin-bottom: 50px; }
 
 .link-to-other-form {
   color: #252525;

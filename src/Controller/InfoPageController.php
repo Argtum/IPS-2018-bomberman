@@ -5,13 +5,13 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DescriptionPageController extends AbstractController
+class InfoPageController extends AbstractController
 {
     /**
-     * @Route("/description", name="description_page")
+     * @Route("/bombermen/info", name="info_page")
      */
     public function index()
     {
-        return $this->render('description_page/index.html.twig', []);
+        return $this->render('info_page/info.html.twig', []);
     }
 }

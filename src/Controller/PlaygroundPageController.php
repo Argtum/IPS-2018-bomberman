@@ -12,10 +12,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class PlaygroundPageController extends AbstractController
 {
     /**
-     * @Route("/playground", name="playground")
+     * @Route("/bomberman/game/{number_of_players}", name="playground")
+     * @param $number_of_players
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index()
+    public function index($number_of_players)
     {
-        return $this->render('playground_page/index.html.twig', []);
+        return $this->render('playground_page/playground.html.twig', [
+            'number_of_players' => $number_of_players
+        ]);
     }
 }
