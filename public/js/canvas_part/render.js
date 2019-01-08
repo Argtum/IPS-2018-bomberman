@@ -1,4 +1,4 @@
-import {NUMBER_OF_CELL_X, NUMBER_OF_CELL_Y} from './arena.js';
+import {NUMBER_OF_CELL_X, NUMBER_OF_CELL_Y} from './gameObjects.js';
 
 function drawBattleArena(ctx, arena) {
     ctx.fillStyle = arena.backgroundColor;

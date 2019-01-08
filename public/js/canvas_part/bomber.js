@@ -1,103 +1,4 @@
-import {Vec2} from './clickHandler.js';
-
-const NUMBER_OF_BOMBERMANS = 2;
-const BOMBERMAN_RADIUS = 22;
-const BOMBERMAN_SPEED = new Vec2(200, 200);
-const BOMBERMAN_START_ANGLE = 0;
-const BOMBERMAN_END_ANGLE = Math.PI * 2;
-const NUMBERS_OF_BOMBS = 3;
-
-const BOMBERMAN_1 = {
-    'id': 1,
-    'position': new Vec2(25, 25),
-    'color': '#126396',
-    'keyCode': {
-        DROP: 32,   //SPACE
-        LEFT: 65,   //A
-        UP: 87,     //W
-        RIGHT: 68,  //D
-        DOWN: 83,   //S
-    },
-};
-
-const BOMBERMAN_2 = {
-    'id': 2,
-    'position': new Vec2(725, 525),
-    'color': '#89111d',
-    'keyCode': {
-        DROP: 13,   //RIGHT_CTRL
-        LEFT: 37,   //LEFT_ARROW
-        UP: 38,     //UP_ARROW
-        RIGHT: 39,  //RIGHT_ARROW
-        DOWN: 40,   //DOWN_ARROW
-    },
-};
-
-const BOMBERMAN_3 = {
-    'id': 3,
-    'position': new Vec2(25, 525),
-    'color': '#118417',
-};
-
-const BOMBERMAN_4 = {
-    'id': 4,
-    'position': new Vec2(725, 25),
-    'color': '#E5E106',
-};
-
-function Bomber(bomberPosition, bomberSpeed, bomberRadius, bomberColor, bomberStartAngle, bomberEndAngle, numberOfBombs,
-    id, status, keyCode) {
-    this.radius = bomberRadius;
-    this.speed = bomberSpeed;
-    this.bomberColor = bomberColor;
-    this.radiusStart = bomberStartAngle;
-    this.radiusEnd = bomberEndAngle;
-    this.position = bomberPosition;
-    this.numberOfBombs = numberOfBombs;
-    this.id = id;
-    this.status = status;
-    this.keyCode = keyCode;
-
-    this._map = {};
-
-    this.onKeyDown = function(keyCode) {
-        this._map[keyCode] = true;
-    };
-
-    this.onKeyUp = function(keyCode) {
-        delete this._map[keyCode];
-    };
-
-    this.isPressed = function(keyCode) {
-        return Boolean(this._map[keyCode]);
-    };
-}
-
-function createBomber(bombermanData) {
-    const bomberPosition = bombermanData.position;
-    const bomberSpeed = BOMBERMAN_SPEED;
-    const bomberRadius = BOMBERMAN_RADIUS;
-    const bomberColor = bombermanData.color;
-    const bomberStartAngle = BOMBERMAN_START_ANGLE;
-    const bomberEndAngle = BOMBERMAN_END_ANGLE;
-    const numberOfBombs = NUMBERS_OF_BOMBS;
-    const id = bombermanData.id;
-    const status = 'alive';
-    const keyCode = bombermanData.keyCode;
-
-    return new Bomber(
-        bomberPosition,
-        bomberSpeed,
-        bomberRadius,
-        bomberColor,
-        bomberStartAngle,
-        bomberEndAngle,
-        numberOfBombs,
-        id,
-        status,
-        keyCode
-    );
-}
+import {createBomber, BOMBERMAN_1, BOMBERMAN_2, BOMBERMAN_3, BOMBERMAN_4, NUMBER_OF_BOMBERMANS} from "./gameObjects.js";
 
 function initStartParameters() {
     const bombersParameters = [];
@@ -144,7 +45,7 @@ function clearStartPosition(bombers, place) {
 }
 
 export {
-    clearStartPosition,
     getBombers,
+    clearStartPosition,
     deleteBomber,
 };

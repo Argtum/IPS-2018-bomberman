@@ -1,6 +1,5 @@
-import {NUMBER_OF_CELL_X, NUMBER_OF_CELL_Y} from './arena.js';
+import {NUMBER_OF_CELL_X, NUMBER_OF_CELL_Y, BOMB_RADIUS} from './gameObjects.js';
 import {Vec2} from './clickHandler.js';
-import {BOMB_RADIUS} from './bomb.js';
 
 const X_COLLISION = new Vec2(0, 1);
 const Y_COLLISION = new Vec2(1, 0);

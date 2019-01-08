@@ -32,4 +32,9 @@ $(window).on('load', function ()
 {
     registerClickOnSet(".button_left", dec);
     registerClickOnSet(".button_right", inc);
+
+    // if (!window.WebSocket) {
+    //     document.body.innerHTML = 'WebSocket в этом браузере не поддерживается.';
+    // }
+    // let socket = new WebSocket("ws://localhost:8081");
 });

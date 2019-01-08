@@ -1,5 +1,6 @@
-import {getCurrentPosition, ARENA_CELL} from './arena.js';
-import {createBomb, BOMB_LIFETIME, BOMB_COLOR} from './bomb.js';
+import {getCurrentPosition} from './arenaMap.js';
+import {createBomb, BOMB_LIFETIME, BOMB_COLOR} from './gameObjects.js';
+import {ARENA_CELL} from './gameObjects.js';
 
 // const keyCode = {
 //     //PLAYER 1
