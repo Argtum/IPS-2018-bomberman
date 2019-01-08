@@ -1,6 +1,6 @@
 import {ARENA_CELL, NUMBER_OF_CELL_X, NUMBER_OF_CELL_Y} from './gameObjects.js';
 import {Vec2, Direction} from './clickHandler.js';
-import {createBomb, FIRE_COLOR, EXPLOSION_TIME} from './gameObjects.js';
+import {createBomb, FIRE_IMG, EXPLOSION_TIME} from './gameObjects.js';
 
 function explosion(position, place, mainBomb, fireDirection) {
     const currentObjType = place.whatType(position.x, position.y);
@@ -8,7 +8,7 @@ function explosion(position, place, mainBomb, fireDirection) {
         const currentPosition = new Vec2(position.x * ARENA_CELL + ARENA_CELL/2,
             position.y * ARENA_CELL + ARENA_CELL/2);
         const fireLifeTime = mainBomb.lifeTime;
-        place.takePlace(createBomb(currentPosition, fireLifeTime, 0, FIRE_COLOR), 'fire');
+        place.takePlace(createBomb(currentPosition, fireLifeTime, 0, FIRE_IMG), 'fire');
     } else if (currentObjType == 'bomb') {
         place.getObj(position.x, position.y).lifeTime = EXPLOSION_TIME;
     } else if (currentObjType == 'block') {
@@ -75,7 +75,7 @@ function trackLifeTime(place, bombers, dt) {
                         fireDirection['upAllowed'] = 0;
                     }
                 }
-                place.getObj(i, j).color = FIRE_COLOR;
+                place.getObj(i, j).color = FIRE_IMG;
                 place.takePlace(place.getObj(i, j), 'fire');
             }
         }

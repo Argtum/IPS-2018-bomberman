@@ -24,7 +24,7 @@ const BOMBERMAN_1 = {
 const BOMBERMAN_2 = {
     'id': 2,
     'position': new Vec2(725, 525),
-    'color': '#89111d',
+    'color': '#89111D',
     'keyCode': {
         DROP: 13,   //RIGHT_CTRL
         LEFT: 37,   //LEFT_ARROW
@@ -106,7 +106,7 @@ const ARENA_START_POINT_Y = 0;
 const ARENA_CELL = 50;
 const NUMBER_OF_CELL_X = 15;
 const NUMBER_OF_CELL_Y = 11;
-const ARENA_BACKGROUND_COLOR = '#CCC';
+const ARENA_BACKGROUND_COLOR = '#C0C0C0';
 
 function Arena(arenaStartX, arenaStartY, arenaWidth, arenaHeight, backgroundColor) {
     this.startX = arenaStartX;
@@ -135,77 +135,114 @@ function createArena() {
 //BLOCKS
 const BARRIER_WIDTH = 44;
 const BARRIER_HEIGHT = 44;
-const BARRIER_COLOR = '#555';
-const BLOCK_COLOR = '#4286f4';
+const BARRIER_IMG = {
+    'x': 70,
+    'y': 174,
+    'width': 17,
+    'height': 17,
+};
 
-function Block(barrierPosition, barrierWidth, barrierHeight, barrierColor) {
+const BLOCK_IMG = {
+    'x': 87,
+    'y': 174,
+    'width': 17,
+    'height': 17,
+};
+
+function Block(barrierPosition, barrierWidth, barrierHeight, picture) {
     this.position = barrierPosition;
     this.width = barrierWidth;
     this.height = barrierHeight;
-    this.barrierColor = barrierColor;
+    this.imgStartX = picture.x;
+    this.imgStartY = picture.y;
+    this.imgWidth = picture.width;
+    this.imgHeight = picture.height;
 }
 
-function createBarriers(position, color) {
+function createBarriers(position, img) {
     const barrierPosition = position;
     const barrierWidth = BARRIER_WIDTH;
     const barrierHeight = BARRIER_HEIGHT;
-    const barrierColor = color;
+    const picture = img;
 
     return new Block(
         barrierPosition,
         barrierWidth,
         barrierHeight,
-        barrierColor
+        picture
     );
 }
 
 //BOMBS
 const BOMB_RADIUS = 22;
-const BOMB_START_ANGLE = 0;
-const BOMB_END_ANGLE = Math.PI * 2;
-const BOMB_COLOR = '#222';
+const BOMB_IMG = [{
+    'x': 49,
+    'y': 255,
+    'width': 17,
+    'height': 17,
+}, {
+    'x': 33,
+    'y': 257,
+    'width': 15,
+    'height': 15,
+}, {
+    'x': 19,
+    'y': 259,
+    'width': 13,
+    'height': 13,
+}];
+
 const BOMB_LIFETIME = 3; //в милисекундах
 const FIRE_SIZE = 3;
-const FIRE_COLOR = '#FF0000';
+const FIRE_IMG = {
+    'x': 517,
+    'y': 289,
+    'width': 17,
+    'height': 17,
+};
 const EXPLOSION_TIME = 0.5; //в милисекундах
+const BOMB_ANIMATION_TIME = 20;
 
-function Bomb(bombPosition, radius, radiusStart, radiusEnd, bombColor, fireRadius, lifeTime, explosionTime, whoseBomb,
-              allowedCollision) {
+function Bomb(bombPosition, radius, fireRadius, lifeTime, explosionTime, whoseBomb, allowedCollision, img, imgIndex,
+              animationTime, animationWay) {
     this.position = bombPosition;
     this.radius = radius;
-    this.radiusStart = radiusStart;
-    this.radiusEnd = radiusEnd;
-    this.color = bombColor;
     this.fireRadius = fireRadius;
     this.lifeTime = lifeTime;
     this.explosionTime = explosionTime;
     this.whoseBomb = whoseBomb;
     this.allowedCollision = allowedCollision;
+    this.img = img;
+    this.imgIndex = imgIndex;
+    this.animationTime = animationTime;
+    this.animationWay = animationWay;
 }
 
-function createBomb(position, lt, bomberId, color) {
+function createBomb(position, lt, bomberId) {
     const bombPosition = position;
     const bombRadius = BOMB_RADIUS;
-    const bombStartAngle = BOMB_START_ANGLE;
-    const bombEndAngle = BOMB_END_ANGLE;
-    const bombColor = color;
     const fireRadius = FIRE_SIZE;
     const lifeTime = lt;
     const explosionTime = EXPLOSION_TIME;
     const whoseBomb = bomberId;
     const allowedCollision = false;
+    const img = BOMB_IMG;
+    const imgIndex = 0;
+    const animationTime = BOMB_ANIMATION_TIME;
+    const animationWay = 'down';
 
     return new Bomb(
         bombPosition,
         bombRadius,
-        bombStartAngle,
-        bombEndAngle,
-        bombColor,
         fireRadius,
         lifeTime,
         explosionTime,
         whoseBomb,
-        allowedCollision
+        allowedCollision,
+        img,
+        imgIndex,
+        animationTime,
+        animationWay
     );
 }
 
@@ -217,9 +254,9 @@ export {
     ARENA_CELL,
     NUMBER_OF_CELL_X,
     NUMBER_OF_CELL_Y,
-    BLOCK_COLOR,
-    BARRIER_COLOR,
-    FIRE_COLOR,
+    BLOCK_IMG,
+    BARRIER_IMG,
+    FIRE_IMG,
     EXPLOSION_TIME,
     BOMBERMAN_1,
     BOMBERMAN_2,
@@ -227,6 +264,9 @@ export {
     BOMBERMAN_4,
     NUMBER_OF_BOMBERMANS,
     BOMB_LIFETIME,
-    BOMB_COLOR,
-    BOMB_RADIUS
+    BOMB_IMG,
+    BOMB_RADIUS,
+    BOMB_ANIMATION_TIME,
+    BARRIER_WIDTH,
+    BARRIER_HEIGHT
 };

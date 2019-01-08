@@ -1,5 +1,5 @@
 import {getBombers, deleteBomber, clearStartPosition} from './canvas_part/bomber.js';
-import {createArena} from './canvas_part/gameObjects.js';
+import {createArena, NUMBER_OF_CELL_X, NUMBER_OF_CELL_Y, BOMB_ANIMATION_TIME} from './canvas_part/gameObjects.js';
 import {trackLifeTime} from './canvas_part/bomb.js';
 import {handlerForBomber, handlerForBomb, clickHandler} from './canvas_part/clickHandler.js';
 import {redraw} from './canvas_part/render.js';
@@ -9,6 +9,7 @@ import {getUnbreakableBlocks, getBreakableBlocks} from "./canvas_part/blocks.js"
 
 function update(dt, bombers, arena, place) {
     trackLifeTime(place, bombers, dt);
+    animation(dt, place);
     
     for (const bomber of bombers) {
         const directionForce = handlerForBomber(bomber);
@@ -20,6 +21,33 @@ function update(dt, bombers, arena, place) {
         } else {
             bomber.position = bomber.position.add(collisionsResult['distance']);
             handlerForBomb(bomber, place);
+        }
+    }
+}
+
+function animateBomb(dt, bomb) {
+    bomb.animationTime--;
+    if (bomb.animationTime == 0) {
+        if (bomb.imgIndex == 0 || bomb.imgIndex == 2) {
+            bomb.imgIndex = 1;
+        } else if (bomb.animationWay == 'down') {
+            bomb.imgIndex = 2;
+            bomb.animationWay = 'up';
+        } else {
+            bomb.imgIndex = 0;
+            bomb.animationWay = 'down';
+        }
+        bomb.animationTime = BOMB_ANIMATION_TIME;
+    }
+}
+
+function animation(dt, place) {
+    for (let j = 0; j < NUMBER_OF_CELL_Y; j++) {
+        for (let i = 0; i < NUMBER_OF_CELL_X; i++) {
+            const currentPlaceType = place.whatType(i, j);
+            if (currentPlaceType == 'bomb') {
+                animateBomb(dt, place.getObj(i, j));
+            }
         }
     }
 }
