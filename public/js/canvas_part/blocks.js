@@ -1,11 +1,11 @@
 import {Vec2} from "./clickHandler.js";
-import {createBarriers, ARENA_CELL, BLOCK_IMG, BARRIER_IMG} from "./gameObjects.js";
+import {createBarriers, ARENA_CELL, BLOCK_IMG_COORDINATES, BARRIER_IMG_COORDINATES} from "./gameObjects.js";
 
 function getUnbreakableBlocks(place, arena) {
     for (let y = ARENA_CELL; y < arena.arenaHeight; y += ARENA_CELL * 2) {
         for (let x = ARENA_CELL; x < arena.arenaWidth; x += ARENA_CELL * 2) {
             const barrierPosition = new Vec2(x, y);
-            place.takePlace(createBarriers(barrierPosition, BARRIER_IMG), 'barrier');
+            place.takePlace(createBarriers(barrierPosition, BARRIER_IMG_COORDINATES), 'barrier');
         }
     }
 }
@@ -21,7 +21,7 @@ function getBreakableBlocks(place, arena) {
             const yPosition = Math.floor(y / ARENA_CELL);
             if (place.whatType(xPosition, yPosition) == 'empty' && getRandomInt(0, 2)) {
                 const barrierPosition = new Vec2(x, y);
-                place.takePlace(createBarriers(barrierPosition, BLOCK_IMG), 'block');
+                place.takePlace(createBarriers(barrierPosition, BLOCK_IMG_COORDINATES), 'block');
             }
         }
     }

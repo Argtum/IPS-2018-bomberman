@@ -1,6 +1,5 @@
 import {getCurrentPosition} from './arenaMap.js';
-import {createBomb, BOMB_LIFETIME, BOMB_IMG} from './gameObjects.js';
-import {ARENA_CELL} from './gameObjects.js';
+import {createBomb, BOMB_LIFETIME, ARENA_CELL} from './gameObjects.js';
 
 function clickHandler(bombers) {
     for (const bomber of bombers) {
@@ -45,15 +44,19 @@ function handlerForBomber(bomber) {
     let directionForce = Vec2.ZERO;
     if (bomber.isPressed(bomber.keyCode.LEFT)) {
         directionForce = directionForce.add(Direction.LEFT);
+        bomber.direction = 'left';
     }
     if (bomber.isPressed(bomber.keyCode.RIGHT)) {
         directionForce = directionForce.add(Direction.RIGHT);
+        bomber.direction = 'right';
     }
     if (bomber.isPressed(bomber.keyCode.UP)) {
         directionForce = directionForce.add(Direction.UP);
+        bomber.direction = 'up';
     }
     if (bomber.isPressed(bomber.keyCode.DOWN)) {
         directionForce = directionForce.add(Direction.DOWN);
+        bomber.direction = 'down';
     }
     return directionForce;
 }
@@ -65,7 +68,7 @@ function handlerForBomb(bomber, place) {
         const yPosition = Math.floor(bombPosition.y / ARENA_CELL);
 
         if (place.whatType(xPosition, yPosition) == 'empty' && bomber.numberOfBombs > 0) {
-            place.takePlace(createBomb(bombPosition, BOMB_LIFETIME, bomber.id, BOMB_IMG), 'bomb');
+            place.takePlace(createBomb(bombPosition, BOMB_LIFETIME, bomber.id), 'bomb');
             bomber.numberOfBombs--;
         }
     }
