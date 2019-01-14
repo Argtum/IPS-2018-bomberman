@@ -25,13 +25,18 @@ class SettingsPageController extends AbstractController
     public function index(Request $request, RouterInterface $router)
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
+//        $new_game = false;
 
-        $this->router = $router;
-        if ($request->isMethod('POST')) {
-            return new RedirectResponse($this->router->generate('playground', [
-                'number_of_players' => $request->request->get('numberOfPlayers')
-            ]));
-        }
-        return $this->render('settings_page/settings.html.twig', []);
+//        $this->router = $router;
+//        if ($request->isMethod('POST')) {
+//            $new_game = true;
+//            return new RedirectResponse($this->router->generate('playground', [
+//                'number_of_players' => $request->request->get('numberOfPlayers')
+//            ]));
+//        }
+
+        return $this->render('settings_page/settings.html.twig', [
+//            'new_game' => $new_game,
+        ]);
     }
 }

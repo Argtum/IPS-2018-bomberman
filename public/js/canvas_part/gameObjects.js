@@ -1,7 +1,7 @@
 import {Vec2} from "./clickHandler.js";
 
 //BOMBERS
-const NUMBER_OF_BOMBERMANS = 2;
+const NUMBER_OF_BOMBERMANS = $('#parameters').data('number_of_players');
 const BOMBERMAN_RADIUS = 18;
 const BOMBERMAN_SPEED = new Vec2(200, 200);
 const BOMBERMAN_START_ANGLE = 0;
@@ -82,12 +82,70 @@ const BOMBERMAN_3 = {
     'id': 3,
     'position': new Vec2(25, 525),
     'color': '#118417',
+    'keyCode': {
+        DROP: 13,   //RIGHT_CTRL
+        LEFT: 37,   //LEFT_ARROW
+        UP: 38,     //UP_ARROW
+        RIGHT: 39,  //RIGHT_ARROW
+        DOWN: 40,   //DOWN_ARROW
+    },
+    'img': {
+        'down': {
+            '1': {'x': 51, 'y': 39, 'width': 16, 'height': 23},
+            '2': {'x': 69, 'y': 39, 'width': 16, 'height': 23},
+            '3': {'x': 87, 'y': 39, 'width': 16, 'height': 23}
+        },
+        'left': {
+            '1': {'x': 105, 'y': 39, 'width': 16, 'height': 23},
+            '2': {'x': 123, 'y': 39, 'width': 16, 'height': 23},
+            '3': {'x': 142, 'y': 39, 'width': 16, 'height': 23}
+        },
+        'right': {
+            '1': {'x': 160, 'y': 39, 'width': 16, 'height': 23},
+            '2': {'x': 178, 'y': 39, 'width': 16, 'height': 23},
+            '3': {'x': 196, 'y': 39, 'width': 16, 'height': 23}
+        },
+        'up': {
+            '1': {'x': 218, 'y': 39, 'width': 16, 'height': 23},
+            '2': {'x': 236, 'y': 39, 'width': 16, 'height': 23},
+            '3': {'x': 254, 'y': 39, 'width': 16, 'height': 23}
+        }
+    }
 };
 
 const BOMBERMAN_4 = {
     'id': 4,
     'position': new Vec2(725, 25),
     'color': '#E5E106',
+    'keyCode': {
+        DROP: 13,   //RIGHT_CTRL
+        LEFT: 37,   //LEFT_ARROW
+        UP: 38,     //UP_ARROW
+        RIGHT: 39,  //RIGHT_ARROW
+        DOWN: 40,   //DOWN_ARROW
+    },
+    'img': {
+        'down': {
+            '1': {'x': 51, 'y': 39, 'width': 16, 'height': 23},
+            '2': {'x': 69, 'y': 39, 'width': 16, 'height': 23},
+            '3': {'x': 87, 'y': 39, 'width': 16, 'height': 23}
+        },
+        'left': {
+            '1': {'x': 105, 'y': 39, 'width': 16, 'height': 23},
+            '2': {'x': 123, 'y': 39, 'width': 16, 'height': 23},
+            '3': {'x': 142, 'y': 39, 'width': 16, 'height': 23}
+        },
+        'right': {
+            '1': {'x': 160, 'y': 39, 'width': 16, 'height': 23},
+            '2': {'x': 178, 'y': 39, 'width': 16, 'height': 23},
+            '3': {'x': 196, 'y': 39, 'width': 16, 'height': 23}
+        },
+        'up': {
+            '1': {'x': 218, 'y': 39, 'width': 16, 'height': 23},
+            '2': {'x': 236, 'y': 39, 'width': 16, 'height': 23},
+            '3': {'x': 254, 'y': 39, 'width': 16, 'height': 23}
+        }
+    }
 };
 
 function Bomber(

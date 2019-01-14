@@ -96,15 +96,29 @@ function gameObjectInitializer() {
     return {bombers, arena, place}
 }
 
-function main() {
+// function sendData(bombers, place, socket) {
+//     const data = {
+//         'bombers': bombers,
+//         'place': place
+//     };
+//     socket.send(JSON.stringify(data));
+// }
+//
+// function getData() {
+//     socket.onmessage = function(event) {
+//         return event.data;
+//     };
+// }
+
+function game() {
     const canvas = document.getElementById('canvas');
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
     const gameEntities = gameObjectInitializer();
     const ctx = canvas.getContext('2d');
-    const bombers = gameEntities.bombers;
+    let bombers = gameEntities.bombers;
     const arena = gameEntities.arena;
-    const place = gameEntities.place;
+    let place = gameEntities.place;
 
     clearStartPosition(bombers, place);
     clickHandler(bombers);
@@ -116,13 +130,25 @@ function main() {
         const deltaTime = (currentTimeStamp - lastTimestamp) * 0.001; //сколько секунд прошло с прошлого кадра
         lastTimestamp = currentTimeStamp;
 
+        //const data = getData();
+        //bombers = data.bombers;
+        //place = data.place;
         update(deltaTime, bombers, arena, place);
         redraw(ctx, arena, bombers, place);
         requestAnimationFrame(gameTick);
-
-
+        //sendData(bombers, place, socket);
     };
     gameTick();
 }
 
-main();
+// function waitingRoom() {
+//     socket.onmessage = function(event) {
+//         if (event.status == 'start') {
+//             game(socket);
+//         }
+//     };
+// }
+//
+// waitingRoom();
+
+game();

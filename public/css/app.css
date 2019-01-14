@@ -31,6 +31,12 @@ body {
   .settings__parameter_last {
     margin-bottom: 50px; }
 
+.createdGameWindow {
+  width: 100%;
+  min-height: 100px;
+  background-color: white;
+  overflow: auto; }
+
 .logo {
   max-width: 750px;
   width: 100%;
@@ -97,5 +103,8 @@ body {
     width: 300px;
     font: 700 32px/40px 'Roboto', sans-serif;
     color: orangered; }
+
+.non-height {
+  height: 0; }
 
 /*# sourceMappingURL=app.css.map */

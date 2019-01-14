@@ -12,8 +12,8 @@
 
 {% block body %}
     <article class="form-container">
-        <form class="form-group" method="post">
-            <h1 class="h3 mb-3 font-weight-normal d-flex justify-content-center col-sm-12 settings__title">Settings</h1>
+        <form class="form-group" id="gameSettings">
+            <h2 class="h3 mb-3 font-weight-normal d-flex justify-content-center col-sm-12 settings__title">Settings</h2>
 
             <div class="row justify-content-md-center settings__parameter">
                 <label for="inputNumberOfPlayers" class="col-sm-6 col-form-label col-form-label-sm settings__label">
@@ -39,11 +39,34 @@
                 <button type="button" class="btn btn-primary button_right">&#9658;</button>
             </div>
 
+            <input id="userName" class="d-none" value="{{ app.user.username }}">
+
             <div class="d-flex justify-content-center">
                 <a href="{{ path('homepage') }}" type="button" class="app-button btn btn-danger btn-lg">Back</a>
                 <div class="empty_settings"></div>
-                <button type="submit" class="app-button btn btn-success btn-lg float-right">Player search</button>
+                <button type="submit" class="app-button btn btn-success btn-lg float-right" id="createGame">
+                    Create game
+                </button>
             </div>
         </form>
+
+        <div id="createdGameWindow">
+            <h2 class="h3 mb-3 font-weight-normal d-flex justify-content-center col-sm-12 settings__title">
+                Other games
+            </h2>
+            <div class="createdGameWindow" id="gamesStatusField"></div>
+        </div>
+
+        <div id="yourGameWindow" class="invisible">
+            <h2 class="h3 mb-3 font-weight-normal d-flex justify-content-center col-sm-12 settings__title">
+                Your game
+            </h2>
+            <div class="createdGameWindow" id="youGame">
+                <span>Ваша игра: на
+                    <span id="newGamePlayers"></span> игрока, до
+                    <span id="newGameWins"></span> побед.
+                </span>
+            </div>
+        </div>
     </article>
 {% endblock %}
